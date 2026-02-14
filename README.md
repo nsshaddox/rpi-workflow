@@ -1,11 +1,11 @@
 <div align="center">
-    <img src="./misc/header.png" alt="Spec Driven Development header" width="400"/>
-    <h1>🧭 Spec-Driven Development Workflow</h1>
-    <h3><em>Build predictable software with a repeatable AI-guided workflow.</em></h3>
+    <img src="./misc/header.png" alt="RPI Workflow header" width="400"/>
+    <h1>🧭 RPI (Research, Plan, Implement) Workflow</h1>
+    <h3><em>Build predictable software with a minimal, efficient AI-guided workflow.</em></h3>
 </div>
 
 <p align="center">
-    <strong>Spec-driven development prompts for collaborating with AI agents to deliver reliable outcomes.</strong>
+    <strong>RPI workflow prompts for collaborating with AI agents with minimal documentation overhead.</strong>
 </p>
 
 <p align="center">
@@ -16,14 +16,14 @@
 
 ## Overview
 
-This repository provides **structured prompts** (Markdown files) that guide AI assistants through a complete software development workflow:
+This repository provides **lightweight prompts** (Markdown files) that guide AI assistants through a streamlined software development workflow:
 
-- **Define intent**: generate a reviewed spec with clear demo criteria
-- **Plan**: break work into demoable tasks and subtasks
-- **Execute**: implement with checkpoints and proof artifacts
-- **Validate**: verify implementation against the spec with evidence
+- **Research**: explore codebase and identify patterns (30-50 lines, temporary)
+- **Plan**: break work into actionable tasks (30-50 lines, temporary)
+- **Implement**: execute tasks with verification
+- **Proof**: auto-generate summary and verify implementation (30-40 lines, permanent)
 
-Think of these prompts as reusable playbooks that keep AI agents focused and consistent across long conversations.
+RPI achieves **70%+ reduction in documentation** compared to traditional spec-driven approaches while maintaining code quality.
 
 ## Table of Contents
 
@@ -50,22 +50,22 @@ Install these prompts as native `/slash-commands` in your AI assistant (Cursor, 
 - (Mac): `brew install uv`
 - (Windows): `winget install astral-sh.uv`
 
-##### Install SDD w/ Bash (Mac)
+##### Install RPI w/ Bash (Mac)
 
 ```bash
 uvx --from git+https://github.com/liatrio-labs/slash-command-manager \
   slash-man generate \
-  --github-repo liatrio-labs/spec-driven-workflow \
+  --github-repo <your-org>/rpi-workflow \
   --github-branch main \
   --github-path prompts/
 ```
 
-##### Install SDD w/ PowerShell (Windows)
+##### Install RPI w/ PowerShell (Windows)
 
 ```ps
 uvx --from git+https://github.com/liatrio-labs/slash-command-manager `
   slash-man generate `
-  --github-repo liatrio-labs/spec-driven-workflow `
+  --github-repo <your-org>/rpi-workflow `
   --github-branch main `
   --github-path prompts/
 ```
