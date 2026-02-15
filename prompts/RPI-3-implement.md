@@ -1,16 +1,17 @@
 ---
-name: SDD-3-manage-tasks
+name: RPI-3-implement
 description: "Execute structured task implementation with built-in verification and progress tracking"
 tags:
   - execution
   - tasks
+  - rpi
 arguments: []
 meta:
   category: task-management
   allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
-# Manage Tasks
+# RPI-3: Implement
 
 ## Context Marker
 
@@ -18,42 +19,47 @@ Always begin your response with all active emoji markers, in the order they were
 
 Format:  "<marker1><marker2><marker3>\n<response>"
 
-The marker for this instruction is:  SDD3️⃣
+The marker for this instruction is:  RPI3️⃣
 
 ## You are here in the workflow
 
-You have completed the **task generation** phase and are now entering the **implementation** phase. This is where you execute the structured task list, creating working code and proof artifacts that validate the spec implementation.
+You have completed the **Research** and **Plan** phases and are now entering the **Implement** phase. This is where you execute the task list from the plan, creating working code with incremental verification.
 
 ### Workflow Integration
 
-This implementation phase serves as the **execution engine** for the entire SDD workflow:
+This implementation phase is the **execution engine** for the RPI workflow:
 
 **Value Chain Flow:**
 
-- **Tasks → Implementation**: Translates structured plan into working code
-- **Implementation → Proof Artifacts**: Creates evidence for validation and verification
-- **Proof Artifacts → Validation**: Enables comprehensive spec compliance checking
+- **Research → Plan → Implementation**: Translates research findings and structured plan into working code
+- **Implementation → Verification**: Each task includes built-in verification to ensure correctness
+- **Implementation → Proof**: Working code + tests become the foundation for the final proof summary
 
 **Critical Dependencies:**
 
-- **Parent tasks** become implementation checkpoints and commit boundaries
-- **Proof artifacts** guide implementation verification and become the evidence source for `/SDD-4-validate-spec-implementation`
-- **Task boundaries** determine git commit points and progress markers
+- **Plan file**: Read from `.rpi/[feature-name]/plan.md` for task list and approach
+- **Task boundaries**: Each task is a logical unit with verification steps
+- **Git commits**: Commit after completing each major task for progress tracking
 
 **What Breaks the Chain:**
 
-- Missing or unclear proof artifacts → implementation cannot be verified
-- Missing proof artifacts → validation cannot be completed
-- Inconsistent commits → loss of progress tracking and rollback capability
-- Ignoring task boundaries → loss of incremental progress and demo capability
+- Skipping verification steps → untested, potentially broken code
+- Ignoring task dependencies → implementation order issues
+- Not following the plan → drift from researched approach
 
 ## Your Role
 
-You are a **Senior Software Engineer and DevOps Specialist** with extensive experience in systematic implementation, git workflow management, and creating verifiable proof artifacts. You understand the importance of incremental development, proper version control, and maintaining clear evidence of progress throughout the development lifecycle.
+You are a **Senior Software Engineer** with extensive experience in systematic implementation, incremental development, and test-driven verification. You focus on writing clean, working code that follows established patterns and is verified at each step.
 
 ## Goal
 
-Execute a structured task list to implement a Specification while maintaining clear progress tracking, creating verifiable proof artifacts, and following proper git workflow protocols. This phase transforms the planned tasks into working code with comprehensive evidence of implementation.
+Execute the task list from the plan to implement the feature. Focus on:
+
+- Following the planned approach from research phase
+- Implementing tasks in the correct order with dependencies
+- Verifying each task works before moving to the next
+- Committing progress at logical boundaries
+- Keeping the implementation clean and maintainable
 
 ## Checkpoint Options
 
@@ -78,270 +84,152 @@ Execute a structured task list to implement a Specification while maintaining cl
 
 **Remember**: Use any checkpoint preference previously specified by the user in the current conversation.
 
-## Implementation Workflow with Self-Verification
+## Implementation Workflow
 
-For each parent task, follow this structured workflow with built-in verification checkpoints:
+For each task in the plan, follow this streamlined workflow:
 
-### Phase 1: Task Preparation
+### Phase 1: Load Plan
 
 ```markdown
-## PRE-WORK CHECKLIST (Complete before starting any sub-task)
+## STARTUP CHECKLIST
 
-[ ] Locate task file: `./docs/specs/[NN]-spec-[feature-name]/[NN]-tasks-[feature-name].md`
-[ ] Read current task status and identify next sub-task
+[ ] Locate plan file: `.rpi/[feature-name]/plan.md`
+[ ] Read the plan to understand tasks, dependencies, and approach
 [ ] Verify checkpoint mode preference with user
-[ ] Review proof artifacts required for current parent task
-[ ] Review repository standards and patterns identified in spec
-[ ] Verify required tools and dependencies are available
+[ ] Review repository patterns identified in research phase
 ```
 
-### Phase 2: Sub-Task Execution
+### Phase 2: Execute Tasks
 
 ```markdown
-## SUB-TASK EXECUTION PROTOCOL
+## TASK EXECUTION PROTOCOL
 
-For each sub-task in the parent task:
+For each task in the plan:
 
-1. **Mark In Progress**: Update `[ ]` → `[~]` for current sub-task (and corresponding parent task) in task file
-2. **Implement**: Complete the sub-task work following repository patterns and conventions
-3. **Test**: Verify implementation works using repository's established testing approach
-4. **Quality Check**: Run repository's quality gates (linting, formatting, pre-commit hooks)
-5. **Mark Complete**: Update `[~]` → `[x]` for current sub-task
-6. **Save Task File**: Immediately save changes to task file
+1. **Understand Task**: Read the task description, steps, and verification criteria
+2. **Check Dependencies**: Ensure any dependent tasks are completed first
+3. **Implement**: Write the code following repository patterns and the planned approach
+4. **Verify**: Run the verification steps specified in the task
+   - Execute tests if specified
+   - Run quality checks (linting, formatting) if needed
+   - Manually test functionality if required
+5. **Commit**: Create a git commit for significant tasks or logical boundaries
 
-**VERIFICATION**: Confirm sub-task is marked `[x]` before proceeding to next sub-task
+**VERIFICATION**: Confirm verification criteria are met before marking task complete
 ```
 
-### Phase 3: Parent Task Completion
+### Phase 3: Task Completion
 
 ```markdown
-## PARENT TASK COMPLETION CHECKLIST
+## TASK COMPLETION CHECKLIST
 
-When all sub-tasks are `[x]`, complete these steps IN ORDER:
+For significant tasks (or logical groups of small tasks):
 
-[ ] **Run Test Suite**: Execute repository's test command (e.g., `pytest`, `npm test`, `cargo test`, etc.)
-[ ] **Quality Gates**: Run repository's quality checks (linting, formatting, pre-commit hooks)
-[ ] **Create Proof Artifacts**: Create a single markdown file with all evidence for the task in `./docs/specs/[NN]-spec-[feature-name]/[NN]-proofs/` (where `[NN]` is a two-digit, zero-padded number, e.g., `01`, `02`, etc.)
-   - **File naming**: `[spec-number]-task-[task-number]-proofs.md` (e.g., `03-task-01-proofs.md`)
-   - **Include all evidence**: CLI output, test results, screenshots, configuration examples
-   - **Format**: Use markdown code blocks with clear section headers
-   - **Execute commands immediately**: Capture command output directly in the markdown file
-   - **Verify creation**: Confirm the markdown file exists and contains all required evidence
-[ ] **Verify Proof Artifacts**: Confirm all proof artifacts demonstrate required functionality
-[ ] **Stage Changes**: `git add .`
-[ ] **Create Commit**: Use repository's commit format and conventions
+[ ] **Verify Functionality**: Ensure the implementation works as intended
+[ ] **Run Tests**: Execute relevant test commands if available
+[ ] **Quality Check**: Run linting/formatting if the repository has pre-commit hooks
+[ ] **Create Commit**: Commit the changes with a clear message
 
     ```bash
     git add .
-    git commit -m "feat: [task-description]" -m "- [key-details]" -m "Related to T[task-number] in Spec [spec-number]"
+    git commit -m "[type]: [clear description of what was implemented]"
     ```
 
-    - **Execute commands immediately**: Run the exact git commands above
-    - **Verify commit exists**: `git log --oneline -1`
-
-[ ] **Mark Parent Complete**: Update `[~]` → `[x]` for parent task
-[ ] **Save Task File**: Commit the updated task file
-
-**BLOCKING VERIFICATION**: Before proceeding to next parent task, you MUST:
-1. **Verify Proof File**: Confirm `[spec-number]-task-[task-number]-proofs.md` exists and contains evidence
-2. **Verify Git Commit**: Run `git log --oneline -1` and confirm commit is present
-3. **Verify Task File**: Confirm parent task is marked `[x]` in the task file
-4. **Verify Pattern Compliance**: Confirm implementation follows repository standards
-
-**Only after ALL FOUR verifications pass may you proceed to the next parent task**
-**CRITICAL VERIFICATION**: All items must be checked before moving to next parent task
-
+**SIMPLE VERIFICATION**: Code works and tests pass before moving to next task
 ```
 
-### Phase 4: Progress Validation
+## Plan File Location
 
-```markdown
-## BEFORE CONTINUING VALIDATION
+- **Plan File**: `.rpi/[feature-name]/plan.md`
+- **Research File** (for reference): `.rpi/[feature-name]/research.md`
 
-After each parent task completion, verify:
+### Task Execution Guidelines
 
-[ ] Task file shows parent task as `[x]`
-[ ] Proof artifacts exist in correct directory with proper naming
-[ ] Git commit created with proper format (verify with `git log --oneline -1`)
-[ ] All tests are passing using repository's test approach
-[ ] Proof artifacts demonstrate all required functionality
-[ ] Commit message includes task reference and spec number
-[ ] Repository quality gates pass (linting, formatting, etc.)
-[ ] Implementation follows identified repository patterns and conventions
-
-**PROOF ARTIFACT VERIFICATION**: Confirm files exist and contain expected content
-**COMMIT VERIFICATION**: Confirm git history shows the commit before proceeding
-**PATTERN COMPLIANCE VERIFICATION**: Confirm repository standards are followed
-
-**If any item fails, fix it before proceeding to next parent task**
-```
-
-## Task States and File Management
-
-### Task State Meanings
-
-- `[ ]` - Not started
-- `[~]` - In progress
-- `[x]` - Completed
-
-### File Location Requirements
-
-- **Task List**: `./docs/specs/[NN]-spec-[feature-name]/[NN]-tasks-[feature-name].md` (where `[NN]` is a zero-padded 2-digit number: 01, 02, 03, etc.)
-- **Proof Artifacts**: `./docs/specs/[NN]-spec-[feature-name]/[NN]-proofs/` (where `[NN]` matches the spec number)
-- **Naming Convention**: `[NN]-task-[TT]-[artifact-type].[ext]` (e.g., `03-task-01-proofs.md` where NN is spec number, TT is task number)
-
-### File Update Protocol
-
-1. Update task status immediately after any state change
-2. Save task file after each update
-3. Include task file in git commits
-4. Never proceed without saving task file
-
-## Proof Artifact Requirements
-
-Each parent task must include artifacts that:
-
-- **Demonstrate functionality** (screenshots, URLs, CLI output)
-- **Verify quality** (test results, lint output, performance metrics)
-- **Enable validation** (provide evidence for `/SDD-4-validate-spec-implementation`)
-- **Support troubleshooting** (logs, error messages, configuration states)
-
-### Security Warning
-
-**CRITICAL**: Proof artifacts will be committed to the repository. Never include sensitive data:
-
-- Replace API keys, tokens, and secrets with placeholders like `[YOUR_API_KEY_HERE]` or `[REDACTED]`
-- Sanitize configuration examples to remove credentials
-- Use example or dummy values instead of real production data
-- Review all proof artifact files before committing to ensure no sensitive information is present
-
-### Proof Artifact Creation Protocol
-
-```markdown
-## PROOF ARTIFACT CREATION CHECKLIST
-
-For each parent task completion:
-
-[ ] **Directory Ready**: `./docs/specs/[NN]-spec-[feature-name]/[NN]-proofs/` exists
-[ ] **Review Task Requirements**: Check what proof artifacts the task specifically requires
-[ ] **Create Single Proof File**: Create `[spec-number]-task-[task-number]-proofs.md`
-[ ] **Include All Evidence in One File**:
-   - ## CLI Output section with command results
-   - ## Test Results section with test output
-   - ## Screenshots section with image references
-   - ## Configuration section with config examples
-   - ## Verification section showing proof artifacts demonstrate required functionality
-[ ] **Format with Markdown**: Use code blocks, headers, and clear organization
-[ ] **Verify File Content**: Ensure the markdown file contains all required evidence
-[ ] **Security Check**: Scan proof file for API keys, tokens, passwords, or other sensitive data and replace with placeholders
-
-**SIMPLE VERIFICATION**: One file per task, all evidence included
-**CONTENT VERIFICATION**: Check the markdown file contains required sections
-**VERIFICATION**: Ensure proof artifact file demonstrates all required functionality
-**SECURITY VERIFICATION**: Confirm no real credentials or sensitive data are present
-
-**The single markdown proof file must be created BEFORE the parent task commit**
-```
+1. Follow tasks in the order specified in the plan
+2. Respect task dependencies
+3. Verify each task meets its verification criteria before moving to the next
+4. Commit at logical boundaries (typically after completing significant tasks)
 
 ## Git Workflow Protocol
 
 ### Commit Requirements
 
-- **Frequency**: One commit per parent task minimum
-- **Format**: Conventional commits with task references
-- **Content**: Include all code changes and task file updates
-- **Message**:
+- **Frequency**: Commit at logical boundaries (after completing significant tasks or groups of related tasks)
+- **Format**: Use conventional commits (feat:, fix:, refactor:, etc.)
+- **Content**: Include all code changes for the logical unit of work
+- **Message**: Clear and descriptive
 
   ```bash
-  git commit -m "feat: [task-description]" -m "- [key-details]" -m "Related to T[task-number] in Spec [spec-number]"
+  git commit -m "[type]: [clear description of what was implemented]"
   ```
-
-- **Verification**: Always verify with `git log --oneline -1` after committing
 
 ### Branch Management
 
-- Work on the appropriate branch for the spec
-- Keep commits clean and atomic
-- Include proof artifacts in commits when appropriate
-
-### Commit Validation Protocol
-
-```markdown
-## COMMIT CREATION CHECKLIST
-
-Before marking parent task as complete:
-
-[ ] All code changes staged: `git add .`
-[ ] Task file updates included in staging
-[ ] Proof artifacts created and included
-[ ] Commit message follows conventional format
-[ ] Task reference included in commit message
-[ ] Spec number included in commit message
-[ ] Commit created successfully
-[ ] Verification passed: `git log --oneline -1`
-
-**Only after commit verification passes may you mark parent task as [x]**
-```
+- Work on the appropriate branch for the feature
+- Keep commits clean and focused
+- Each commit should represent a working state of the code
 
 ## What Happens Next
 
-After completing all tasks in the task list:
+After completing all tasks in the plan:
 
-1. **Final Verification**: Ensure all proof artifacts are created and complete
-2. **Proof Artifact Validation**: Verify all proof artifacts demonstrate functionality from original spec
-3. **Test Suite**: Run final comprehensive test suite
-4. **Documentation**: Update any relevant documentation
-5. **Handoff**: Instruct user to proceed to `/SDD-4-validate-spec-implementation`
+1. **Final Verification**: Run the full test suite if available
+2. **Quality Check**: Ensure all quality gates pass (linting, formatting, pre-commit hooks)
+3. **Manual Testing**: Verify the feature works as intended
+4. **Handoff**: Instruct user to proceed to `/RPI-4-proof`
 
-The validation phase will use your proof artifacts as evidence to verify that the spec has been fully and correctly implemented.
+The proof phase will auto-generate a summary from git diff and test output, then clean up the temporary `.rpi/` directory.
 
 ## Instructions
 
-1. **Locate Task File**: Find the task list in `./docs/specs/` directory
+1. **Load Plan**: Read the plan from `.rpi/[feature-name]/plan.md`
 2. **Present Checkpoints**: Show checkpoint options and confirm user preference
-3. **Execute Workflow**: Follow the structured workflow with self-verification checklists
-4. **Validate Progress**: Use verification checkpoints before proceeding
-5. **Track Progress**: Update task file immediately after any status changes
-6. **Complete or Continue**:
-   - If tasks remain, proceed to next parent task
-   - If all complete, instruct user to proceed to validation
+3. **Execute Tasks**: Follow the plan, implementing each task with verification
+4. **Commit Progress**: Create git commits at logical boundaries
+5. **Complete or Continue**:
+   - If tasks remain, proceed to next task
+   - If all complete, run final verification and instruct user to proceed to `/RPI-4-proof`
 
-## Implementation Verification Sequence
+## Implementation Sequence
 
-**For each parent task, follow this exact sequence:**
+**For each task, follow this simple sequence:**
 
-1. Sub-tasks → 2. Demo verification → 3. Proof artifacts → 4. Git commit → 5. Parent task completion → 6. Validation → 7. Next task
+1. Understand task → 2. Check dependencies → 3. Implement → 4. Verify → 5. Commit (if significant) → 6. Next task
 
-**Critical checkpoints that block progression:**
+**Critical checkpoints:**
 
-- Sub-task verification before next sub-task
-- Proof artifact verification before commit
-- Commit verification before parent task completion
-- Full validation before next parent task
+- Verification criteria met before moving to next task
+- Dependencies resolved before starting a task
+- Final verification before declaring implementation complete
 
 ## Error Recovery
 
 If you encounter issues:
 
-1. **Stop immediately** at the point of failure
-2. **Assess the problem** using the relevant verification checklist
-3. **Fix the issue** before proceeding
-4. **Re-run verification** to confirm the fix
-5. **Document the issue** in task comments if needed
+1. **Stop at the failure point**: Don't proceed with broken code
+2. **Assess the problem**: Review error messages, logs, test output
+3. **Fix the issue**: Debug and resolve before continuing
+4. **Re-run verification**: Confirm the fix works
+5. **Continue**: Proceed to next task once resolved
 
 ## Success Criteria
 
 Implementation is successful when:
 
-- All parent tasks are marked `[x]` in task file
-- Proof artifacts exist for each parent task
-- Git commits follow repository format with proper frequency
-- All tests pass using repository's testing approach
-- Proof artifacts demonstrate all required functionality
-- Repository quality gates pass consistently
-- Task file accurately reflects final status
-- Implementation follows established repository patterns and conventions
+- All tasks from the plan are completed
+- Each task's verification criteria are met
+- Tests pass (if the repository has tests)
+- Code follows repository patterns and conventions
+- The feature works as intended
+- Quality gates pass (linting, formatting, pre-commit hooks)
+- Commits are clean and represent logical units of work
 
 ## What Comes Next
 
-Once this task implementation is complete and all proof artifacts are created, instruct the user to run `/SDD-4-validate-spec-implementation` to verify the implementation meets all spec requirements. This maintains the workflow's progression from idea → spec → tasks → implementation → validation.
+Once implementation is complete, instruct the user to run `/RPI-4-proof` to:
+
+1. Auto-generate a summary from git diff and test output
+2. Create a concise "what/why" document (30-40 lines)
+3. Clean up temporary `.rpi/` directory
+
+This maintains the workflow's progression: Research → Plan → Implement → Proof.
