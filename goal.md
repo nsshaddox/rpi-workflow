@@ -73,14 +73,14 @@ RPI is a three-phase workflow that separates thinking from doing, reduces docume
 **1. Research Phase** (Automated with sub-agents)
 - Spawn parallel sub-agents to explore codebase
 - Document existing patterns, architecture, and relevant files
-- Output: Concise technical map in AI-optimized format (JSON/YAML/etc.)
+- Output: `.rpi/[feature-name]/research.md` (30-50 lines, minimal markdown)
 - Human review: Quick scan of findings
 - **Lifecycle: TEMPORARY - deleted after implementation**
 
 **2. Plan Phase** (AI-generated, human-approved)
 - Create implementation plan with specific file paths and code snippets
 - Define success criteria and verification steps
-- Output: Executable plan in AI-optimized format
+- Output: `.rpi/[feature-name]/plan.md` (30-50 lines, minimal markdown)
 - Human review: Approve approach before implementation
 - **Lifecycle: TEMPORARY - deleted after implementation**
 
@@ -91,8 +91,19 @@ RPI is a three-phase workflow that separates thinking from doing, reduces docume
 - Output:
   - Working code (committed)
   - Human-readable "what/why" summary (committed)
-  - Research/Plan artifacts (deleted)
+  - Research/Plan artifacts in `.rpi/[feature-name]/` (deleted)
 - **Lifecycle: Code and summary are PERMANENT, scaffolding is deleted**
+
+**Directory structure supports concurrent workflows:**
+```
+.rpi/
+├── user-auth/
+│   ├── research.md  (temporary)
+│   └── plan.md      (temporary)
+├── payment-flow/
+│   ├── research.md  (temporary)
+│   └── plan.md      (temporary)
+```
 
 ### How RPI Reduces Verbosity
 

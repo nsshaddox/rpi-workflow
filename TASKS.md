@@ -23,8 +23,8 @@
 | 7 | ✅ Completed | Rename skill files (SDD → RPI) | Phase 1 |
 | 8 | ✅ Completed | Update documentation (README, goal.md, roadmap.md, TASKS.md) | Phase 1 |
 | 9 | ✅ Completed | Commit initial RPI fork and documentation | Phase 1 |
-| 10 | ⏸️ Paused | Push to remote repository (no remote created yet) | Phase 1 |
-| 11 | 📋 Next | Modify RPI-1-research.md prompt instructions | Phase 2 |
+| 10 | ✅ Completed | Push to remote repository | Phase 1 |
+| 11 | ✅ Completed | Modify RPI-1-research.md prompt instructions | Phase 2 |
 | 12 | 📋 Pending | Modify RPI-2-plan.md prompt instructions | Phase 2 |
 | 13 | 📋 Pending | Modify RPI-3-implement.md prompt instructions | Phase 2 |
 | 14 | 📋 Pending | Modify RPI-4-proof.md prompt instructions | Phase 2 |
