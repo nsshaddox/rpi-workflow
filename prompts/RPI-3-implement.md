@@ -1,5 +1,5 @@
 ---
-name: SDD-3-manage-tasks
+name: RPI-3-implement
 description: "Execute structured task implementation with built-in verification and progress tracking"
 tags:
   - execution

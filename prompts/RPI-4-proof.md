@@ -1,5 +1,5 @@
 ---
-name: SDD-4-validate-spec-implementation
+name: RPI-4-proof
 description: "Focused validation of code changes against Spec and Proof Artifacts with evidence-based coverage matrix"
 tags:
   - validation
