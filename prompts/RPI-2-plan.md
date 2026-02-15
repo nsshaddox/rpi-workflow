@@ -32,7 +32,7 @@ You have completed the **Research phase** and now need to break the implementati
 - **Plan → Implement**: Task list → working code (committed)
 - **Implement → Proof**: Execution → what/why summary (30-40 lines, committed)
 
-**Key principle**: Plan artifacts are **temporary scaffolding** for AI execution, optimized for machine parsing, not human reading. They are deleted after implementation.
+**Key principle**: Plan artifacts are **temporary scaffolding** for AI execution, optimized for machine parsing, not human reading. They can be removed after implementation.
 
 ## Your Role
 
@@ -47,7 +47,7 @@ Create a **minimal plan document** (30-50 lines) that defines:
 - Verification steps to run after each task
 - Success criteria
 
-**Output location**: `.rpi/[feature-name]/plan.md` (temporary, will be deleted after implementation)
+**Output location**: `.rpi/[feature-name]/plan.md` (temporary, can be removed after implementation)
 
 ## Planning Process
 
@@ -176,7 +176,7 @@ Then immediately instruct: **"If approved, run `/rpi-3-implement [feature-name]`
 
 **Format:** Minimal markdown (30-50 lines)
 **Path:** `.rpi/[feature-name]/plan.md`
-**Lifecycle:** Temporary - will be deleted after implementation
+**Lifecycle:** Temporary - can be removed after implementation
 
 **Directory Structure:**
 
@@ -235,4 +235,4 @@ Once plan is approved by the user, they should run `/rpi-3-implement [feature-na
 - Verify after each task completion
 - Auto-generate proof from git diffs + test output
 - Create permanent "what/why" summary (30-40 lines)
-- Delete temporary `.rpi/[feature-name]/` directory
+- Inform user that temporary `.rpi/[feature-name]/` directory can be removed after proof phase

@@ -1,17 +1,17 @@
 ---
-name: SDD-4-validate-spec-implementation
-description: "Focused validation of code changes against Spec and Proof Artifacts with evidence-based coverage matrix"
+name: RPI-4-proof
+description: "Auto-generate implementation summary and validate code changes against plan"
 tags:
+  - proof
   - validation
-  - verification
-  - quality-assurance
+  - summary
 arguments: []
 meta:
-  category: verification
-  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch, Terminal, Git
+  category: rpi-workflow
+  allowed-tools: Glob, Grep, LS, Read, Write, Terminal, Git
 ---
 
-# Validate Spec Implementation
+# RPI Proof Phase
 
 ## Context Marker
 
@@ -19,246 +19,242 @@ Always begin your response with all active emoji markers, in the order they were
 
 Format:  "<marker1><marker2><marker3>\n<response>"
 
-The marker for this instruction is:  SDD4️⃣
+The marker for this instruction is:  RPI4️⃣
 
 ## You are here in the workflow
 
-You have completed the **implementation** phase and are now entering the **validation** phase. This is where you verify that the code changes conform to the Spec and Task List by examining Proof Artifacts and ensuring all requirements have been met.
+You have completed the **Implementation phase** and are now entering the **Proof phase**. This is where you validate that the code matches the plan, auto-generate a concise summary, and clean up temporary artifacts.
 
-### Workflow Integration
+### Workflow Overview
 
-This validation phase serves as the **quality gate** for the entire SDD workflow:
+**RPI workflow:**
 
-**Value Chain Flow:**
+- **Research → Plan**: Research findings → minimal plan (30-50 lines, temporary)
+- **Plan → Implement**: Task list → working code (committed)
+- **Implement → Proof** (current): Validation → summary (30-40 lines, committed) + cleanup
 
-- **Implementation → Validation**: Transforms working code into verified implementation
-- **Validation → Proof**: Creates evidence of spec compliance and completion
-- **Proof → Merge**: Enables confident integration of completed features
-
-**Critical Dependencies:**
-
-- **Functional Requirements** become the validation criteria for code coverage
-- **Proof Artifacts** guide the verification of user-facing functionality and provide the evidence source for validation checks
-- **Relevant Files** define the scope of changes to be validated
-
-**What Breaks the Chain:**
-
-- Missing proof artifacts → validation cannot be completed
-- Incomplete task coverage → gaps in spec implementation
-- Unclear or missing proof artifacts → cannot verify user acceptance
-- Inconsistent file references → validation scope becomes ambiguous
+**Key principle**: Proof phase generates a **permanent, minimal summary** of "what changed and why" for human readers. Temporary scaffolding artifacts in `.rpi/[feature-name]/` are no longer needed and can be removed.
 
 ## Your Role
 
-You are a **Senior Quality Assurance Engineer and Code Review Specialist** with extensive experience in systematic validation, evidence-based verification, and comprehensive code review. You understand the importance of thorough validation, clear evidence collection, and maintaining high standards for code quality and spec compliance.
+You are a **Technical Documenter** who creates concise, high-level summaries of implementation work. Your goal is to capture "what changed and why" in 30-40 lines for future reference, validate the implementation, and clean up temporary artifacts.
 
 ## Goal
 
-Validate that the **code changes** conform to the Spec and Task List by verifying **Proof Artifacts** and **Relevant Files**. Produce a single, human-readable Markdown report with an evidence-based coverage matrix and clear PASS/FAIL gates.
+Create a **minimal summary document** (30-40 lines) that captures what changed and why, validate the implementation against the plan, and clean up temporary artifacts.
+
+**Output location**: `docs/rpi/[feature-name].md` (permanent, committed to repo)
+
+**Cleanup**: Inform user that `.rpi/[feature-name]/` directory (temporary research and plan artifacts) can be removed
 
 ## Context
 
-- **Specification file** (source of truth for requirements).
-- **Task List file** (contains Proof Artifacts and Relevant Files).
-- Assume the **Repository root** is the current working directory.
-- Assume the **Implementation work** is on the current git branch.
+- **Plan file**: `.rpi/[feature-name]/plan.md` (contains task list and approach)
+- **Research file**: `.rpi/[feature-name]/research.md` (contains original findings)
+- **Repository root**: Current working directory
+- **Implementation work**: On the current git branch
 
-## Auto-Discovery Protocol
+## Feature Name Discovery
 
-If no spec is provided, follow this exact sequence:
+If the user provides a feature name (e.g., `/rpi-4-proof user-auth`):
 
-1. Scan `./docs/specs/` for directories matching pattern `[NN]-spec-[feature-name]/`
-2. Identify spec directories with corresponding `[NN]-tasks-[feature-name].md` files
-3. Select the spec with:
-   - Highest sequence number where task list exists
-   - At least one incomplete parent task (`[ ]` or `[~]`)
-   - Most recent git activity on related files (use `git log --since="2 weeks ago" --name-only` to check)
-4. If multiple specs qualify, select the one with the most recent git commit
+- Read `.rpi/user-auth/plan.md`
 
-## Validation Gates (mandatory to apply)
+If no feature name is provided:
 
-- **GATE A (blocker):** Any **CRITICAL** or **HIGH** issue → **FAIL**.
-- **GATE B:** Coverage Matrix has **no `Unknown`** entries for Functional Requirements → **REQUIRED**.
-- **GATE C:** All Proof Artifacts are accessible and functional → **REQUIRED**.
-- **GATE D:** All changed files are either in "Relevant Files" list OR explicitly justified in git commit messages → **REQUIRED**.
-- **GATE E:** Implementation follows identified repository standards and patterns → **REQUIRED**.
-- **GATE F (security):** Proof artifacts contain no real API keys, tokens, passwords, or other sensitive credentials → **REQUIRED**.
+- Ask the user which feature to validate
+- List available features in `.rpi/` directory
 
-## Evaluation Rubric (score each 0–3 to guide severity)
+## Simple Validation Checklist
 
-Map score to severity: 0→CRITICAL, 1→HIGH, 2→MEDIUM, 3→OK.
+Before generating the summary, perform these quick checks:
 
-- **R1 Spec Coverage:** Every Functional Requirement has corresponding Proof Artifacts that demonstrate it is satisfied
-- **R2 Proof Artifacts:** Each Proof Artifact is accessible and demonstrates the required functionality.
-- **R3 File Integrity:** All changed files are listed in "Relevant Files" and vice versa.
-- **R4 Git Traceability:** Commits clearly map to specific requirements and tasks.
-- **R5 Evidence Quality:** Evidence includes proof artifact test results and file existence checks.
-- **R6 Repository Compliance:** Implementation follows identified repository standards and patterns.
+- [ ] **Plan exists**: `.rpi/[feature-name]/plan.md` is readable
+- [ ] **Code changes present**: `git diff` shows commits since plan was created
+- [ ] **Tasks completed**: All tasks in the plan have corresponding code changes
+- [ ] **Tests pass** (if applicable): Run test commands specified in plan verification steps
+- [ ] **Quality checks pass** (if applicable): Pre-commit hooks, linting, type checking
 
-## Validation Process (step-by-step chain-of-thought)
+**Note**: This is a lightweight validation, not a heavy proof-of-correctness exercise. Focus on "does it work?" and "does it match the plan?"
 
-> Keep internal reasoning private; **report only evidence, commands, and conclusions**.
+## Proof Process
 
-### Step 1 — Input Discovery
+### Step 1: Read Plan and Research
 
-- Execute Auto-Discovery Protocol to locate Spec + Task List
-- Use `git log --stat -10` to identify recent implementation commits
-  - If necessary, continue looking further back in the git log until you find all commits relevant to the spec
-- Parse "Relevant Files" section from the task list
+- Read `.rpi/[feature-name]/plan.md` to understand intended tasks
+- Read `.rpi/[feature-name]/research.md` to understand original context
+- Note the feature's complexity assessment and approach
 
-### Step 2 — Git Commit Mapping
+### Step 2: Analyze Implementation
 
-- Map recent commits to specific requirements using commit messages
-- Verify commits reference the spec/task appropriately
-- Ensure implementation follows logical progression
-- Identify any files changed outside the "Relevant Files" list and note their justification
+- Run `git log --stat -10` to see recent commits
+- Run `git diff` to understand what changed
+- Map commits to tasks in the plan
+- Identify key files modified
 
-### Step 3 — Change Analysis
+### Step 3: Quick Validation
 
-- **First**, identify all files changed since the spec was created
-- **Then**, map each changed file to the "Relevant Files" list (or note justification)
-- **Next**, extract all Functional Requirements and Demoable Units from the Spec
-- **Also**, parse Repository Standards from the Spec
-- **Finally**, parse all Proof Artifacts from the task list
+- Check that plan tasks have corresponding implementations
+- Run any verification commands specified in the plan (tests, linting)
+- Confirm basic functionality works
 
-### Step 4 — Evidence Verification
+### Step 4: Generate Summary Document
 
-For each Functional Requirement, Demoable Unit, and Repository Standard:
+Create `docs/rpi/[feature-name].md` with this **exact format**:
 
-1) Pose a verification question (e.g., "Do Proof Artifacts demonstrate FR-3?").
-2) Verify with independent checks:
-   - Verify proof artifact files exist (from task list)
-   - Test that each Proof Artifact (URLs, CLI commands, test references) demonstrates what it claims
-   - Verify file existence for "Relevant Files" listed in task list
-   - Check repository pattern compliance (via proof artifacts, file checks, and commit log analysis)
-3) Record **evidence** (proof artifact test results, file existence checks, commit references).
-4) Mark each item **Verified**, **Failed**, or **Unknown**.
+```markdown
+# [FEATURE_NAME]
 
-## Detailed Checks
+**Implemented**: [Date]
+**Complexity**: [simple|medium|complex] (from research phase)
 
-1) **File Integrity**
-   - All changed files appear in "Relevant Files" section OR are justified in commit messages
-   - All "Relevant Files" that should be changed are actually changed
-   - Files outside scope must have clear justification in git history
+## What Changed
 
-2) **Proof Artifact Verification**
-   - URLs are accessible and return expected content
-   - CLI commands execute successfully with expected output
-   - Test references exist and can be executed
-   - Screenshots/demos show required functionality
-   - **Security Check**: Proof artifacts contain no real API keys, tokens, passwords, or sensitive data
+[3-5 bullet points describing what was implemented]
+- Added [specific feature/component/file]
+- Modified [existing functionality]
+- Created [new functionality]
 
-3) **Requirement Coverage**
-   - Proof Artifacts exist for each Functional Requirement
-   - Proof Artifacts demonstrate functionality as specified in the spec
-   - All required proof artifact files exist and are accessible
+## Why
 
-4) **Repository Compliance**: Implementation follows identified repository patterns and conventions
-   - Verify coding standards compliance
-   - Check testing pattern adherence
-   - Validate quality gate passage
-   - Confirm workflow convention compliance
+[2-3 sentences explaining the business/technical rationale for this feature]
 
-5) **Git Traceability**
-   - Commits clearly relate to specific tasks/requirements
-   - Implementation story is coherent through commit history
-   - No unrelated or unexpected changes
+## Key Files
 
-## Red Flags (auto CRITICAL/HIGH)
+- `[file_path]` - [what changed in this file]
+- `[file_path]` - [what changed in this file]
 
-- Missing or non-functional Proof Artifacts
-- Changed files not listed in "Relevant Files" without justification in commit messages
-- Functional Requirements with no proof artifacts
-- Git commits unrelated to spec implementation
-- Any `Unknown` entries in the Coverage Matrix
-- Repository pattern violations (coding standards, quality gates, workflows)
-- Implementation that ignores identified repository conventions
-- **Real API keys, tokens, passwords, or credentials in proof artifacts** (auto CRITICAL)
+## Implementation Notes
 
-## Output (single human-readable Markdown report)
+[2-4 bullet points of important technical decisions or patterns used]
+- Followed [existing pattern] for [aspect]
+- Used [approach/library] for [functionality]
+- [Any gotchas or considerations for future maintainers]
 
-### 1) Executive Summary
+## Verification
 
-- **Overall:** PASS/FAIL (list gates tripped)
-- **Implementation Ready:** **Yes/No** with one-sentence rationale
-- **Key metrics:** % Requirements Verified, % Proof Artifacts Working, Files Changed vs Expected
+- [✓] Tests: [test command result or "N/A"]
+- [✓] Quality: [linting/pre-commit result or "N/A"]
+- [✓] Manual: [functionality confirmed or specific test performed]
+```
 
-### 2) Coverage Matrix (required)
+#### Target: 30-40 lines total
 
-Provide three tables (edit as needed):
+**What to include:**
 
-#### Functional Requirements
+- High-level summary of changes
+- Business/technical rationale
+- Key files modified
+- Important technical decisions
+- Basic verification confirmation
 
-| Requirement ID/Name | Status (Verified/Failed/Unknown) | Evidence (file:lines, commit, or artifact) |
-| --- | --- | --- |
-| FR-1 | Verified | Proof artifact: `test-x.ts` passes; commit `abc123` |
-| FR-2 | Failed | No proof artifact found for this requirement |
+**What to exclude:**
 
-#### Repository Standards
+- Detailed code snippets or implementations
+- Line-by-line change descriptions
+- Verbose explanations
+- Full git diff output
+- Temporary research/plan details
 
-| Standard Area | Status (Verified/Failed/Unknown) | Evidence & Compliance Notes |
-| --- | --- | --- |
-| Coding Standards | Verified | Follows repository's style guide and conventions |
-| Testing Patterns | Verified | Uses repository's established testing approach |
-| Quality Gates | Verified | Passes all repository quality checks |
-| Documentation | Failed | Missing required documentation patterns |
+### Step 5: Inform User About Temporary Artifacts
 
-#### Proof Artifacts
+**IMPORTANT**: After successfully generating the summary document, inform the user that the temporary `.rpi/[feature-name]/` directory is no longer needed and can be removed.
 
-| Unit/Task | Proof Artifact | Status | Verification Result |
-| --- | --- | --- | --- |
-| Unit-1 | Screenshot: `/path` page demonstrates end-to-end functionality | Verified | HTTP 200 OK, expected content present |
-| Unit-2 | CLI: `command --flag` demonstrates feature works | Failed | Exit code 1: "Error: missing parameter" |
+This is a core principle of the RPI workflow - temporary scaffolding artifacts can be removed after implementation to achieve the 70% documentation reduction goal.
 
-### 3) Validation Issues
+**Tell the user:**
 
-Report any issues found during validation that prevent verification or indicate problems. Use severity levels from the Evaluation Rubric (CRITICAL/HIGH/MEDIUM/LOW). Include issues from the Coverage Matrix marked as "Failed" or "Unknown", and any Red Flags encountered.
+> The temporary research and plan files in `.rpi/[feature-name]/` are no longer needed. You can remove them with:
+>
+> ```bash
+> rm -rf .rpi/[feature-name]/
+> ```
 
-**Issue Format:**
+Let the user decide when to remove these files.
 
-For each issue, provide:
+## Output Requirements
 
-- **Severity:** CRITICAL/HIGH/MEDIUM/LOW (based on rubric scoring)
-- **Issue:** Concise description with location (file paths from task list or proof artifact references) and evidence (proof artifact test results, file existence checks, coverage gaps)
-- **Impact:** What breaks or cannot be verified (functionality | verification | traceability)
-- **Recommendation:** Precise, actionable steps to resolve
+**Format:** Minimal markdown (30-40 lines)
+**Path:** `docs/rpi/[feature-name].md` (permanent, committed to repo)
+**Lifecycle:** Permanent - this is the only documentation artifact that persists
 
-**Examples:**
+## Critical Constraints
 
-| Severity | Issue | Impact | Recommendation |
-| --- | --- | --- | --- |
-| HIGH | Proof Artifact URL returns 404. `task-list.md#L45` references `https://example.com/demo`. Evidence: `curl -I https://example.com/demo` → "HTTP/1.1 404 Not Found" | Functionality cannot be verified | Update URL in task list or deploy missing endpoint |
-| CRITICAL | Changed file not in "Relevant Files". `src/auth.ts` created but not listed in task list. Evidence: `git log --name-only` shows file created; task list only references `src/user.ts` | Implementation scope creep | Update task list to include `src/auth.ts` or revert unauthorized changes |
-| MEDIUM | Missing proof artifact for FR-2. Task list specifies test file `src/feature/x.test.ts` but file does not exist. Evidence: File check shows `src/feature/x.test.ts` missing | Requirement verification incomplete | Add test file `src/feature/x.test.ts` as specified in task list |
+**NEVER:**
 
-**Note:** Do not report issues that are already clearly marked in the Coverage Matrix unless additional context is needed. Focus on actionable problems that need resolution.
+- Create verbose documentation or detailed reports
+- Include coverage matrices or heavy validation tables
+- Write more than 40 lines in the summary document
+- Skip informing the user about temporary artifacts that can be removed
+- Include full code implementations or detailed git diffs
+- Reference the temporary .rpi/ files in the permanent summary
 
-### 4) Evidence Appendix
+**ALWAYS:**
 
-- Git commits analyzed with file changes
-- Proof Artifact test results (outputs, screenshots)
-- File comparison results (expected vs actual)
-- Commands executed with results
+- Read both `.rpi/[feature-name]/plan.md` and `.rpi/[feature-name]/research.md`
+- Keep summary document minimal (30-40 lines)
+- Focus on "what changed and why" not "how it was implemented"
+- Save output to `docs/rpi/[feature-name].md`
+- **Inform user that `.rpi/[feature-name]/` directory can be removed after summary is created**
+- Run basic validation checks (tests, quality gates)
+- Use the exact format specified above
 
-## Saving The Output
+## Directory Structure
 
-After generation is complete:
+**Before RPI-4-proof:**
 
-- Save the report using the specification below
-- Verify the file was created successfully
+```text
+.rpi/
+└── [feature-name]/
+    ├── research.md  (temporary)
+    └── plan.md      (temporary)
 
-### Validation Report File Details
+docs/rpi/
+└── (empty or has other features)
+```
 
-**Format:** Markdown (`.md`)
-**Location:** `./docs/specs/[NN]-spec-[feature-name]/` (where `[NN]` is a zero-padded 2-digit number: 01, 02, 03, etc.)
-**Filename:** `[NN]-validation-[feature-name].md` (e.g., if the Spec is `01-spec-user-authentication.md`, save as `01-validation-user-authentication.md`)
-**Full Path:** `./docs/specs/[NN]-spec-[feature-name]/[NN]-validation-[feature-name].md`
+**After RPI-4-proof:**
+
+```text
+.rpi/
+└── [feature-name]/  (no longer needed, can be removed)
+    ├── research.md
+    └── plan.md
+
+docs/rpi/
+└── [feature-name].md  (permanent summary, 30-40 lines)
+```
+
+## Quality Checklist
+
+Before completing the proof phase, verify:
+
+- [ ] Read plan and research files
+- [ ] Analyzed git commits and changes
+- [ ] Ran verification checks from plan
+- [ ] Generated summary document (30-40 lines)
+- [ ] Saved to `docs/rpi/[feature-name].md`
+- [ ] **Informed user that `.rpi/[feature-name]/` directory can be removed**
+- [ ] Summary follows the exact format
+- [ ] Summary is human-readable and focuses on "what/why"
 
 ## What Comes Next
 
-Once validation is complete and all issues are resolved, the implementation is ready for merge. This completes the workflow's progression from idea → spec → tasks → implementation → validation. Instruct the user to do a final code review before merging the changes.
+Once the proof phase is complete:
+
+1. **Summary created**: `docs/rpi/[feature-name].md` exists
+2. **Ready for commit**: Working code + summary document ready to commit
+3. **Workflow complete**: Research → Plan → Implement → Proof cycle finished
+
+Instruct the user to:
+
+- Review the summary document
+- Commit the implementation and summary together
+- Remove `.rpi/[feature-name]/` directory if desired (temporary artifacts no longer needed)
+- Create a PR if needed (use `/create-pull-request` skill)
 
 ---
 
-**Validation Completed:** [Date+Time]
-**Validation Performed By:** [AI Model]
+**Proof Completed:** [Date+Time]
+**Summary Generated:** `docs/rpi/[feature-name].md`
+**Note:** Temporary artifacts in `.rpi/[feature-name]/` can now be removed

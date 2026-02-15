@@ -33,7 +33,7 @@ We are at the **beginning** of the RPI (Research, Plan, Implement) workflow. Thi
 - **Implement → Proof**: Execute tasks → working code (committed)
 - **Proof**: Auto-generate summary → what/why doc (30-40 lines, committed)
 
-**Key principle**: Research artifacts are **temporary scaffolding** for AI execution, optimized for machine parsing, not human reading. They are deleted after implementation.
+**Key principle**: Research artifacts are **temporary scaffolding** for AI execution, optimized for machine parsing, not human reading. They can be removed after implementation.
 
 ## Your Role
 
@@ -48,7 +48,7 @@ Create a **minimal research document** (30-50 lines) that identifies:
 - Technical constraints
 - Recommended approach
 
-**Output location**: `.rpi/[feature-name]/research.md` (temporary, will be deleted after implementation)
+**Output location**: `.rpi/[feature-name]/research.md` (temporary, can be removed after implementation)
 
 ## Research Process
 
@@ -178,7 +178,7 @@ If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase
 
 **Format:** Minimal markdown (30-50 lines)
 **Path:** `.rpi/[feature-name]/research.md`
-**Lifecycle:** Temporary - will be deleted after implementation
+**Lifecycle:** Temporary - can be removed after implementation
 
 **Directory Structure:**
 
