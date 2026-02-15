@@ -24,6 +24,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 ### Day 1-2: Fork and Rename
 
 **Actions**:
+
 1. Fork `spec-driven-workflow` repository → `rpi-workflow`
 2. Pull latest changes from upstream
 3. Remove git remote to prevent accidental pushes to original
@@ -36,6 +37,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 6. Add RPI documentation (goal.md, roadmap.md, TASKS.md)
 
 **Deliverables**:
+
 - ✅ New repo: `rpi-workflow` (forked from spec-driven-workflow)
 - ✅ Skills renamed in prompts/ directory
 - ✅ Git remote removed (no accidental pushes)
@@ -47,6 +49,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 **Document the minimal markdown format that prompts should instruct the AI to use**:
 
 1. **Research output format** (AI creates `.rpi/[feature-name]/research.md`):
+
 ```markdown
 # Research: [FEATURE_NAME]
 
@@ -67,7 +70,8 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 [recommended_approach]
 ```
 
-2. **Plan output format** (AI creates `.rpi/[feature-name]/plan.md`):
+1. **Plan output format** (AI creates `.rpi/[feature-name]/plan.md`):
+
 ```markdown
 # Plan: [FEATURE_NAME]
 
@@ -91,7 +95,8 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 [risk] → [mitigation]
 ```
 
-3. **Summary output format** (AI creates permanent summary doc):
+1. **Summary output format** (AI creates permanent summary doc):
+
 ```markdown
 # [FEATURE_NAME]
 
@@ -106,6 +111,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 ```
 
 **Deliverables**:
+
 - ✅ Output format examples documented (reference for prompt modifications)
 - ✅ 30-50 line target defined for temporary artifacts
 - ✅ Ready to modify prompt instructions
@@ -119,6 +125,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 ### Week 2: Adapt `RPI-1-research.md` prompt (from `SDD-1-generate-spec.md`)
 
 **Modify the prompt instructions to:**
+
 1. **Change output format**: Instruct AI to create minimal markdown (30-50 lines) instead of verbose spec
 2. **Add Explore agent usage**: Instruct AI to use Explore agents for parallel codebase exploration
 3. **Simplify focus**: Instruct AI to focus on patterns, files, constraints, approach only
@@ -126,12 +133,14 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 5. **Add human approval step**: Instruct AI to request approval before proceeding to plan phase
 
 **What to remove from prompt instructions**:
+
 - Detailed requirements sections
 - Acceptance criteria sections
 - Edge cases documentation
 - Verbose explanations
 
 **What to keep in prompt instructions**:
+
 - File identification
 - Pattern recognition
 - Constraint analysis
@@ -140,6 +149,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 **Target output**: 30-50 lines total in `.rpi/research.md`
 
 **Testing**:
+
 - Install modified skill via slash-command-manager
 - Run `/rpi-1-research` on simple test case
 - Verify output format is minimal (30-50 lines)
@@ -147,6 +157,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 - Validate human approval flow works
 
 **Deliverables**:
+
 - ✅ `prompts/RPI-1-research.md` updated with new instructions
 - ✅ AI generates minimal markdown output
 - ✅ AI uses Explore agents as instructed
@@ -155,6 +166,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 ### Week 3: Adapt `RPI-2-plan.md` prompt (from `SDD-2-generate-task-list-from-spec.md`)
 
 **Modify the prompt instructions to:**
+
 1. **Simplify task format**: Instruct AI to create concise task descriptions
 2. **Change output format**: Instruct AI to create minimal markdown (30-50 lines total)
 3. **Read from research**: Instruct AI to load `.rpi/[feature-name]/research.md` as context
@@ -162,11 +174,13 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 5. **Keep dependency tracking**: Task relationships still important for execution order
 
 **What to remove from prompt instructions**:
+
 - Long task descriptions
 - Detailed acceptance criteria
 - Verbose explanations
 
 **What to keep in prompt instructions**:
+
 - Task IDs and dependencies
 - File paths to modify
 - Verification criteria
@@ -175,6 +189,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 **Target output**: 30-50 lines total in `.rpi/plan.md`
 
 **Testing**:
+
 - Install modified skill
 - Run `/rpi-2-plan` after research phase
 - Verify plan references research findings
@@ -182,6 +197,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 - Validate task dependencies are clear
 
 **Deliverables**:
+
 - ✅ `prompts/RPI-2-plan.md` updated with new instructions
 - ✅ AI generates minimal markdown output
 - ✅ AI reads and references `.rpi/[feature-name]/research.md`
@@ -190,32 +206,37 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 ### Week 4: Adapt `RPI-3-implement.md` & `RPI-4-proof.md` prompts
 
 **Modify `RPI-3-implement.md` prompt** (from `SDD-3-manage-tasks.md`):
+
 - **Keep task execution logic**: Task-by-task implementation works well
 - **Read from plan**: Instruct AI to load `.rpi/[feature-name]/plan.md`
 - **Simplify verification**: Instruct AI to use less verbose proof requirements
 - **Remove**: Instructions for detailed proof artifact generation during implementation
 
 **Modify `RPI-4-proof.md` prompt** (from `SDD-4-validate-spec-implementation.md`):
+
 - **Auto-generate proof**: Instruct AI to use `git diff` + test output
 - **Create minimal summary**: Instruct AI to create 30-40 line summary focusing on "what/why"
 - **Skip "how" details**: Code diffs show implementation details
 - **Add cleanup instruction**: Instruct AI to delete `.rpi/` directory after summary is created
 
 **Cleanup instructions to add to prompt**:
-```markdown
+
+```text
 After creating the summary document:
 1. Commit the summary to the repository
 2. Delete the temporary research and plan files:
    ```bash
    rm -rf .rpi/[feature-name]/
    ```
+
    Or to clean up all completed RPI workflows:
+
    ```bash
    rm -rf .rpi/
    ```
-```
 
 **Testing**:
+
 - Install both modified skills
 - Run full workflow: `/rpi-1-research` → `/rpi-2-plan` → `/rpi-3-implement` → `/rpi-4-proof`
 - Verify `.rpi/` directory is deleted after proof
@@ -223,6 +244,7 @@ After creating the summary document:
 - Validate git diff is captured correctly
 
 **Deliverables**:
+
 - ✅ `prompts/RPI-3-implement.md` updated with simplified instructions
 - ✅ `prompts/RPI-4-proof.md` updated with auto-generation and cleanup instructions
 - ✅ AI deletes `.rpi/[feature-name]/` directory after summary creation
@@ -237,11 +259,13 @@ After creating the summary document:
 ### Test Features (Week 5)
 
 **Run 3 features through complete RPI workflow**:
+
 1. **Simple** (100-200 lines, 2-3 files) - e.g., Add new agent config
 2. **Medium** (300-500 lines, 5-8 files) - e.g., Add new slash command
 3. **Complex** (>500 lines, 10+ files) - e.g., Refactor core detection logic
 
 **For each feature**:
+
 - Execute full workflow: `/rpi-research` → `/rpi-plan` → `/rpi-implement` → `/rpi-proof`
 - Collect metrics at each phase
 - Document issues and friction points
@@ -261,12 +285,14 @@ After creating the summary document:
 | Rework iterations | ? | ≤1 | ? | ? | ? | ? |
 
 **Iteration Points**:
+
 - After each feature, review metrics and friction
 - Adjust skills, templates, or workflow as needed
 - Re-test problem areas
 - Document learnings
 
 **Deliverables**:
+
 - ✅ 3 features implemented with RPI
 - ✅ Complete metrics collected
 - ✅ Skills iterated and improved
@@ -320,6 +346,7 @@ After creating the summary document:
    - Continue monitoring adoption
 
 **Deliverables**:
+
 - ✅ Complete documentation (guide + examples)
 - ✅ Team training completed
 - ✅ Installation instructions updated
@@ -331,22 +358,28 @@ After creating the summary document:
 ## Decision Points & Milestones
 
 ### Milestone 1: End of Week 1 (Fork & Setup Complete)
+
 **Decision**: Is RPI foundation ready?
+
 - ✅ **GO**: Begin prompt modifications (Phase 2)
 - ❌ **NO-GO**: Fix setup issues, resolve blockers
 
 **Key Criteria**:
+
 - Repo forked successfully
 - Skills renamed (SDD → RPI)
 - Output format examples documented
 - `.gitignore` includes `.rpi/` directory
 
 ### Milestone 2: End of Week 4 (Prompts Modified)
+
 **Decision**: Do all 4 RPI prompts instruct AI correctly?
+
 - ✅ **GO**: Proceed to validation (Phase 3)
 - ❌ **NO-GO**: Fix prompt instructions, test more
 
 **Key Criteria**:
+
 - AI generates minimal markdown when using `/rpi-1-research` (30-50 lines)
 - AI reads research and creates plan with `/rpi-2-plan` (30-50 lines)
 - AI executes tasks correctly with `/rpi-3-implement`
@@ -354,12 +387,15 @@ After creating the summary document:
 - Full workflow runs without errors
 
 ### Milestone 3: End of Week 5 (Validation Complete)
+
 **Decision**: Does RPI meet success criteria across features?
+
 - ✅ **GO**: Proceed to rollout (Phase 4)
 - ⚠️ **ITERATE**: Fix issues, improve skills
 - ❌ **NO-GO**: Major gaps, needs significant rework
 
 **Success Criteria** (from goals.md):
+
 1. ✅ 70%+ documentation reduction (60-100 lines vs 1,271)
 2. ✅ Documentation time <1 hour (vs 2-3 hours)
 3. ✅ No increase in bugs/rework
@@ -367,12 +403,15 @@ After creating the summary document:
 5. ✅ Positive qualitative feedback
 
 ### Milestone 4: End of Week 6 (Rollout Complete)
+
 **Decision**: Is RPI ready for production use?
+
 - ✅ **SUCCESS**: RPI is default, SDD is fallback
 - ⚠️ **ISSUES**: Address blockers, extend timeline
 - ❌ **FAILURE**: Significant problems, reassess
 
 **Adoption Criteria**:
+
 - Documentation complete and clear
 - Team trained and comfortable
 - No major blocking issues
@@ -383,11 +422,13 @@ After creating the summary document:
 ## Resources Needed
 
 ### People
+
 - **Developer(s)**: Modify RPI prompt files (estimated: 20 hours)
 - **Pilot User(s)**: Test RPI workflow and provide feedback (estimated: 10-15 hours)
 - **Reviewer(s)**: Review RPI artifacts and provide approval (ongoing)
 
 ### Tools & Infrastructure
+
 - Claude Code CLI (already available)
 - Explore agents (already available)
 - Git (already available)
@@ -397,6 +438,7 @@ After creating the summary document:
 - **Modified**: RPI prompt files with new instructions
 
 ### Time Commitment
+
 - **Phase 1** (Week 1): ~8 hours (fork and setup)
 - **Phase 2** (Weeks 2-4): ~20 hours (adapt skills)
 - **Phase 3** (Week 5): ~12 hours (validation on 3 features)
@@ -408,10 +450,12 @@ After creating the summary document:
 ## Risks & Mitigation
 
 ### Risk 1: RPI Doesn't Achieve Target Metrics
+
 **Probability**: Medium
 **Impact**: High
 
 **Mitigation**:
+
 - Start with manual prototype to validate approach
 - Collect metrics early and often
 - Have clear go/no-go decision points
@@ -420,10 +464,12 @@ After creating the summary document:
 **Contingency**: If metrics aren't met, iterate on workflow or revert to SDD
 
 ### Risk 2: Prompts Don't Instruct AI Correctly
+
 **Probability**: Medium
 **Impact**: Medium
 
 **Mitigation**:
+
 - Clear, unambiguous prompt instructions
 - Test on multiple features during validation
 - Iterate on prompt wording based on AI behavior
@@ -432,10 +478,12 @@ After creating the summary document:
 **Contingency**: Refine prompts, add more explicit instructions, provide more examples
 
 ### Risk 3: Team Resists New Workflow
+
 **Probability**: Low
 **Impact**: Medium
 
 **Mitigation**:
+
 - Show validation results (metrics improvement)
 - Provide good examples and documentation
 - Make adoption gradual with SDD fallback
@@ -444,10 +492,12 @@ After creating the summary document:
 **Contingency**: Address concerns, improve tools, extend adoption timeline
 
 ### Risk 4: Complex Features Don't Fit RPI
+
 **Probability**: Low
 **Impact**: High
 
 **Mitigation**:
+
 - Test RPI on varying complexity during validation
 - Build flexibility into workflow (skip phases, adapt format)
 - Keep "when to use RPI vs simple" guidelines
@@ -459,12 +509,14 @@ After creating the summary document:
 ## Success Indicators
 
 ### Early Success Signs (Week 1)
+
 - ✅ Fork completed without issues
 - ✅ Skills renamed (SDD → RPI)
 - ✅ Output format examples documented
 - ✅ Ready to modify prompts
 
 ### Mid-Point Success Signs (Weeks 2-5)
+
 - ✅ All 4 prompts modified with new instructions
 - ✅ AI generates minimal markdown (30-50 lines) as instructed
 - ✅ Validation features meet metrics targets
@@ -472,6 +524,7 @@ After creating the summary document:
 - ✅ Positive qualitative feedback
 
 ### Final Success Signs (Week 6)
+
 - ✅ Documentation complete and clear
 - ✅ Team trained and comfortable
 - ✅ Metrics consistently better than SDD
@@ -482,12 +535,14 @@ After creating the summary document:
 ## Failure Indicators
 
 ### Early Warning Signs
+
 - ❌ Manual prototype doesn't meet metrics
 - ❌ Workflow feels clunky or slow
 - ❌ Context window regularly exceeds 40%
 - ❌ Human review is too time-consuming
 
 ### Critical Failure Signs
+
 - ❌ Bug escape rate increases
 - ❌ Rework iterations increase
 - ❌ Time savings don't materialize
@@ -503,6 +558,7 @@ After creating the summary document:
 **Start Phase 1 (Week 1) with:**
 
 1. **Fork spec-driven-workflow Repository** (Day 1) ✅ COMPLETED
+
    ```bash
    cd /Users/nickshaddox/repos/FLYWHEEL/SDD-LIKE
    # Pull latest changes first
@@ -514,12 +570,13 @@ After creating the summary document:
    git remote remove origin
    ```
 
-2. **Update README** (Day 1) ✅ COMPLETED
+1. **Update README** (Day 1) ✅ COMPLETED
    - Update title and description to reflect RPI workflow
    - Update installation commands to reference rpi-workflow
    - Highlight 70%+ documentation reduction benefit
 
-3. **Rename Skill Files** (Day 1-2) ✅ COMPLETED
+1. **Rename Skill Files** (Day 1-2) ✅ COMPLETED
+
    ```bash
    cd prompts/
    mv SDD-1-generate-spec.md RPI-1-research.md
@@ -528,18 +585,19 @@ After creating the summary document:
    mv SDD-4-validate-spec-implementation.md RPI-4-proof.md
    ```
 
-4. **Document Output Formats** (Day 2-3)
+1. **Document Output Formats** (Day 2-3)
    - Document desired research output format (30-50 lines)
    - Document desired plan output format (30-50 lines)
    - Document desired summary output format (30-40 lines)
    - These serve as reference examples when modifying prompts
 
-5. **Setup `.gitignore`** (Day 3-4)
+1. **Setup `.gitignore`** (Day 3-4)
    - Add `.rpi/` to `.gitignore` so temporary files aren't committed
    - Push rpi-workflow to your GitHub repository (optional, for testing installation)
 
-6. **Test Current Workflow** (Day 4-5)
+1. **Test Current Workflow** (Day 4-5)
    - Install current RPI skills using slash-command-manager:
+
      ```bash
      uvx --from git+https://github.com/liatrio-labs/slash-command-manager \
        slash-man generate \
@@ -547,6 +605,7 @@ After creating the summary document:
        --github-branch main \
        --github-path prompts/
      ```
+
    - Run skills (they still have SDD behavior - that's expected)
    - Understand current SDD behavior before modifying prompts
    - Note: Modifications happen in Phase 2
@@ -634,6 +693,7 @@ These are examples of what the AI should generate when following the modified pr
 This roadmap provides a fast, structured path from SDD to RPI in just **6 weeks** by **forking and adapting the existing SDD codebase**. The approach prioritizes speed while maintaining quality with clear go/no-go decision points at each milestone.
 
 **Key Success Factors**:
+
 1. **Leverage existing code**: Fork SDD instead of building from scratch
 2. **Test while building**: Validate each skill as it's adapted
 3. **Measure everything**: Track metrics from Week 2 onward
@@ -641,6 +701,7 @@ This roadmap provides a fast, structured path from SDD to RPI in just **6 weeks*
 5. **Document learnings**: Capture best practices for rollout
 
 **Why This Approach Works**:
+
 - ✅ Reuses proven prompt structure (skills, approval flows, task management)
 - ✅ Faster than building from scratch (~48 hours vs ~55+ hours)
 - ✅ Lower risk - modifying working prompts vs creating new ones
@@ -648,6 +709,7 @@ This roadmap provides a fast, structured path from SDD to RPI in just **6 weeks*
 - ✅ Test-as-you-modify approach validates continuously
 
 **Timeline Summary**:
+
 - Week 1: Fork and setup
 - Weeks 2-4: Adapt 4 RPI skills
 - Week 5: Validate on 3 real features

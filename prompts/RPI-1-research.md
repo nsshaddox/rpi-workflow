@@ -27,6 +27,7 @@ We are at the **beginning** of the RPI (Research, Plan, Implement) workflow. Thi
 ### Workflow Overview
 
 **RPI workflow:**
+
 - **Research → Plan** (current): Explore codebase → minimal findings (30-50 lines, temporary)
 - **Plan → Implement**: Break work into tasks → minimal plan (30-50 lines, temporary)
 - **Implement → Proof**: Execute tasks → working code (committed)
@@ -41,6 +42,7 @@ You are a **Technical Investigator** with expertise in quickly understanding cod
 ## Goal
 
 Create a **minimal research document** (30-50 lines) that identifies:
+
 - Existing patterns to follow
 - Key files to modify
 - Technical constraints
@@ -53,6 +55,7 @@ Create a **minimal research document** (30-50 lines) that identifies:
 ### Step 1: Understand the Feature Request
 
 If the user has not provided a clear feature description, ask them to describe:
+
 - What they want to build
 - Why they need it
 - Any specific requirements or constraints
@@ -64,6 +67,7 @@ Keep this brief - 2-3 questions maximum. We're gathering just enough to start re
 **CRITICAL**: Use the Task tool with `subagent_type="Explore"` to spawn parallel research agents. Do NOT perform manual Glob/Grep searches yourself.
 
 **Spawn 2-4 Explore agents in parallel** to investigate:
+
 - Similar features or patterns in the codebase
 - Files that will need modification
 - Testing patterns
@@ -71,7 +75,8 @@ Keep this brief - 2-3 questions maximum. We're gathering just enough to start re
 - Documentation patterns
 
 **Example agent tasks:**
-```
+
+```text
 Task 1: "Find similar features to [feature name] - search for existing implementations, patterns, and conventions"
 Task 2: "Identify all files related to [domain/area] - find configuration files, main implementation files, and tests"
 Task 3: "Locate testing patterns for [feature type] - find test files and understand testing conventions"
@@ -79,6 +84,7 @@ Task 4: "Search for [specific pattern/library] usage - understand how the codeba
 ```
 
 **Why use Explore agents:**
+
 - Parallel exploration is faster than sequential
 - Agents can search deeply without cluttering your context
 - Reduces your cognitive load
@@ -89,6 +95,7 @@ Task 4: "Search for [specific pattern/library] usage - understand how the codeba
 ### Step 3: Assess Complexity
 
 Based on research findings, categorize the feature:
+
 - **simple**: <100 lines, 1-2 files, clear pattern to follow
 - **medium**: 100-500 lines, 3-8 files, moderate complexity
 - **complex**: >500 lines, 9+ files, architectural changes
@@ -99,6 +106,7 @@ Based on research findings, categorize the feature:
 ### Step 4: Create Feature Directory and Generate Research Document
 
 **First, create the feature directory:**
+
 - **Path**: `.rpi/[feature-name]/`
 - **Naming**: Use lowercase with hyphens for feature name
 - **Examples**: `.rpi/user-auth/`, `.rpi/payment-flow/`, `.rpi/admin-panel/`
@@ -135,15 +143,17 @@ This supports concurrent workflows - multiple features can be researched/planned
 [2-3 sentences describing recommended implementation approach. Focus on what to do, not how to do it in detail.]
 ```
 
-**Target: 30-50 lines total**
+#### Target: 30-50 lines total
 
 **What to include:**
+
 - Only patterns directly relevant to this feature
 - Only files that will actually be modified
 - Only constraints that affect implementation decisions
 - Brief approach recommendation (not detailed steps)
 
 **What to exclude:**
+
 - Detailed requirements or acceptance criteria
 - Step-by-step implementation instructions
 - Verbose explanations or background
@@ -153,6 +163,7 @@ This supports concurrent workflows - multiple features can be researched/planned
 ### Step 5: Request Human Approval
 
 After creating `.rpi/[feature-name]/research.md`, show the user:
+
 1. The complexity assessment
 2. Key findings summary (3-4 bullets)
 3. Recommended approach (1-2 sentences)
@@ -170,7 +181,8 @@ If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase
 **Lifecycle:** Temporary - will be deleted after implementation
 
 **Directory Structure:**
-```
+
+```text
 .rpi/
 ├── user-auth/
 │   └── research.md
@@ -181,12 +193,14 @@ If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase
 ```
 
 **Directory Setup:**
+
 - Create `.rpi/[feature-name]/` directory (supports concurrent workflows)
 - Verify `.rpi/` is in `.gitignore` (should not be committed)
 
 ## Critical Constraints
 
 **NEVER:**
+
 - Perform manual Glob/Grep searches - always use Explore agents
 - Create verbose documentation or detailed specifications
 - Include detailed requirements or acceptance criteria
@@ -195,6 +209,7 @@ If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase
 - Include edge cases or extensive technical details
 
 **ALWAYS:**
+
 - Use Task tool with Explore agents for parallel research
 - Keep research document minimal (30-50 lines)
 - Focus on patterns, files, constraints, and approach only
@@ -205,6 +220,7 @@ If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase
 ## What Comes Next
 
 Once research is approved by the user, they should run `/rpi-2-plan [feature-name]` to start the Plan phase, which will:
+
 - Read `.rpi/[feature-name]/research.md` for context
 - Break work into specific tasks
 - Create `.rpi/[feature-name]/plan.md` (30-50 lines, temporary)

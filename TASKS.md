@@ -8,6 +8,7 @@
 ## Task Overview
 
 ### Planning Phase (Completed ✅)
+
 | # | Status | Task |
 |---|--------|------|
 | 1 | ✅ Completed | Refine problem statement with specific examples and quantification |
@@ -17,6 +18,7 @@
 | 5 | ✅ Completed | Create actionable next steps and implementation roadmap |
 
 ### Implementation Phase
+
 | # | Status | Task | Phase |
 |---|--------|------|-------|
 | 6 | ✅ Completed | Fork spec-driven-workflow repository | Phase 1 |
@@ -37,7 +39,9 @@
 **Owner**: N/A
 
 ### Description
+
 Expand the problem statement in goals.md to include:
+
 - Specific examples of verbosity (e.g., line counts, file sizes)
 - Quantifiable pain points (time spent, cognitive load)
 - Real-world scenarios where current SDD falls short
@@ -45,6 +49,7 @@ Expand the problem statement in goals.md to include:
 - Concrete examples of missed sub-agent opportunities
 
 ### Outcome
+
 - Added concrete example from Spec 08 (VS Code Insiders)
 - Documented 13:1 documentation-to-code ratio
 - Broke down where 1,271 lines of documentation came from (spec: 179, tasks: 95, proofs: 494, validation: 377, questions: 126)
@@ -59,7 +64,9 @@ Expand the problem statement in goals.md to include:
 **Owner**: N/A
 
 ### Description
+
 Flesh out the RPI (Research, Plan, Implement) concept:
+
 - Define each phase clearly (Research, Plan, Implement)
 - Explain how RPI differs from current SDD workflow
 - Describe how RPI reduces verbosity while maintaining quality
@@ -67,6 +74,7 @@ Flesh out the RPI (Research, Plan, Implement) concept:
 - Provide examples of RPI workflow in practice
 
 ### Outcome
+
 - Researched RPI from multiple sources (Goose, Fanpino blog, GitHub implementations)
 - Defined three phases with clear responsibilities
 - Established documentation philosophy: **Temporary vs. Permanent**
@@ -87,7 +95,9 @@ Flesh out the RPI (Research, Plan, Implement) concept:
 **Owner**: N/A
 
 ### Description
+
 Establish clear success criteria for the improved workflow:
+
 - Target reduction in documentation verbosity (e.g., "reduce from 1000 lines to X lines")
 - Quality benchmarks (code correctness, completeness)
 - Time/efficiency metrics (developer time saved)
@@ -96,22 +106,27 @@ Establish clear success criteria for the improved workflow:
 - Comparison framework between old SDD and new RPI
 
 ### Outcome
+
 Added comprehensive success metrics section to goals.md:
 
 **Primary Metrics:**
+
 1. Documentation efficiency: 13:1 → 2:1 ratio
 2. Time efficiency: 2-3 hours → <1 hour
 3. Context window health: Stay below 40% (the "Smart Zone")
 
 **Quality Metrics:**
+
 - All important: PR comments, rework iterations, test coverage, bug escape rate
 - Process quality: Human review at Research/Plan stages, sub-agents handle 80%+ of exploration
 
 **Evaluation Framework:**
+
 - Test on 3-5 real features of varying complexity
 - Comparison table with baseline and target metrics
 
 **Success Definition:**
+
 - 70%+ documentation reduction
 - No increase in bugs/rework
 - Context stays healthy
@@ -119,6 +134,7 @@ Added comprehensive success metrics section to goals.md:
 - Sub-agents do heavy lifting
 
 **Failure Indicators:**
+
 - Bug escape rate increases
 - More rework needed
 - Time savings don't materialize
@@ -133,7 +149,9 @@ Added comprehensive success metrics section to goals.md:
 **Owner**: N/A
 
 ### Description
+
 Identify and document specific research questions that need answers:
+
 - What is the optimal level of proof/documentation?
 - Which parts of current SDD provide most value?
 - How can sub-agents be integrated effectively?
@@ -142,25 +160,30 @@ Identify and document specific research questions that need answers:
 - What existing workflows or methodologies can we learn from?
 
 ### Outcome
+
 **Format Analysis Completed:**
+
 - Created 13 format examples (removed CSV as incomplete, added 5 AI-optimized formats)
 - Conducted parallel subagent testing with identical parsing tasks
 - Collected metrics: token usage, parsing time, difficulty ratings, completeness
 - **Result: Minimal Markdown wins** (36 lines, 13,705 tokens, 13,027ms, 2/10 difficulty)
 
 **Key Findings:**
+
 1. **Token overhead is fixed**: All formats used ~13.7k tokens (±4%), suggesting cognitive overhead is format-independent
 2. **Parsing speed matters**: Minimal markdown was 72% faster than full markdown
 3. **Sweet spot: 30-50 lines**: Balance of conciseness and parseability
 4. **Human readability valuable**: Markdown allows debugging/validation without losing AI efficiency
 
 **Deliverables:**
+
 - Format analysis completed: 13 formats evaluated
 - Updated goal.md: Specifies minimal markdown as chosen format
 - Recommendation: Use minimal markdown (30-50 lines) for temporary RPI artifacts
 - Rationale: Best balance of parsing speed, token efficiency, and human readability
 
 **Research Questions Answered:**
+
 - ✅ Optimal format: Minimal markdown (best performance + human readability)
 - ✅ Documentation level: 30-50 lines per phase (temporary), 30-40 lines permanent
 - ✅ Sub-agent integration: Research/validation phases, parallel exploration
@@ -174,7 +197,9 @@ Identify and document specific research questions that need answers:
 **Owner**: N/A
 
 ### Description
+
 Define concrete next steps for moving the project forward:
+
 - Prototype or proof-of-concept plans
 - Experiments to run (e.g., test RPI on small features)
 - Tools/infrastructure needed
@@ -187,24 +212,28 @@ Define concrete next steps for moving the project forward:
 **Comprehensive 8-week roadmap created**: See [roadmap.md](roadmap.md)
 
 **Four-phase approach**:
+
 1. **Phase 1: Fork & Setup** (Week 1) - Fork repo, rename skills, document output formats
 2. **Phase 2: Modify Prompts** (Weeks 2-4) - Adapt prompt instructions for RPI workflow
 3. **Phase 3: Validation** (Week 5) - Test on 3 real features, collect metrics
 4. **Phase 4: Rollout** (Week 6) - Document, train, adopt
 
 **Key deliverables defined**:
+
 - Modified prompt files: `RPI-1-research.md`, `RPI-2-plan.md`, `RPI-3-implement.md`, `RPI-4-proof.md`
 - Output format examples: Minimal markdown for Research/Plan/Summary (30-50 lines)
 - Validation metrics: Track doc-to-code ratio, time, context, quality
 - Documentation: User guide, examples, best practices
 
 **Decision points established**:
+
 - Milestone 1 (Week 2): Does manual RPI meet targets?
 - Milestone 2 (Week 4): Are tools functional and usable?
 - Milestone 3 (Week 6): Does RPI meet success criteria?
 - Milestone 4 (Week 8): Is team adopting successfully?
 
 **Resources estimated**:
+
 - ~48 hours total effort over 6 weeks
 - Prompt modifications: ~20 hours (modifying 4 prompt files)
 - Testing/validation: ~12 hours (3 features)
@@ -217,6 +246,7 @@ Define concrete next steps for moving the project forward:
 ## Notes and Context
 
 ### Key Decisions Made
+
 1. **Documentation split**: Permanent human-readable (committed) vs. Temporary AI-readable (deleted)
 2. **Format selection**: Minimal markdown (30-50 lines) for temporary artifacts - best performance + human readability
 3. **Format testing methodology**: Parallel subagent testing with identical tasks, measured tokens/time/difficulty
@@ -225,6 +255,7 @@ Define concrete next steps for moving the project forward:
 6. **Token overhead hypothesis**: AI cognitive load is ~13.7k tokens regardless of format (±4%)
 
 ### Files Created/Modified (Phase 1 ✅)
+
 - `goal.md` - Main goals document with problem, solution, metrics
 - `roadmap.md` - 6-week implementation roadmap
 - `TASKS.md` - Task tracking and progress
@@ -232,6 +263,7 @@ Define concrete next steps for moving the project forward:
 - `prompts/RPI-*.md` - Renamed from SDD-* (4 files, content unchanged)
 
 ### References
+
 - [Goose RPI Tutorial](https://block.github.io/goose/docs/tutorials/rpi/)
 - [Context Engineering Blog](https://fanpino.com/en/blog/context-engineering-rpi-workflow-ai-coding/)
 - [RPI Strategy by Patrick Robinson](https://patriciarobinson.com/blog/introducing-rpi-strategy/)
@@ -253,7 +285,8 @@ When resuming work in a new context window:
 
 ## Current Session Summary (2026-02-14)
 
-### What We Accomplished Today:
+### What We Accomplished Today
+
 - ✅ Identified correct repository to fork (`spec-driven-workflow`, not `slash-command-manager`)
 - ✅ Forked `spec-driven-workflow` → `rpi-workflow`
 - ✅ Pulled latest changes from upstream
@@ -265,7 +298,8 @@ When resuming work in a new context window:
 - ✅ Fixed all documentation misalignments
 - ✅ Committed all changes locally
 
-### What's Next:
+### What's Next
+
 - Create remote GitHub repository (optional, for sharing/installation)
 - Push local commits to remote (when remote is ready)
 - **Phase 2**: Begin modifying prompt instructions (Week 2 of roadmap)
