@@ -9,3 +9,6 @@ coverage.xml
 
 # Misc
 temp/
+
+# RPI temporary artifacts (deleted after implementation)
+.rpi/

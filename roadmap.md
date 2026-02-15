@@ -46,7 +46,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 
 **Document the minimal markdown format that prompts should instruct the AI to use**:
 
-1. **Research output format** (AI creates `.rpi/research.md`):
+1. **Research output format** (AI creates `.rpi/[feature-name]/research.md`):
 ```markdown
 # Research: [FEATURE_NAME]
 
@@ -67,7 +67,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 [recommended_approach]
 ```
 
-2. **Plan output format** (AI creates `.rpi/plan.md`):
+2. **Plan output format** (AI creates `.rpi/[feature-name]/plan.md`):
 ```markdown
 # Plan: [FEATURE_NAME]
 
@@ -122,7 +122,7 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 1. **Change output format**: Instruct AI to create minimal markdown (30-50 lines) instead of verbose spec
 2. **Add Explore agent usage**: Instruct AI to use Explore agents for parallel codebase exploration
 3. **Simplify focus**: Instruct AI to focus on patterns, files, constraints, approach only
-4. **Change output location**: Instruct AI to save to `.rpi/research.md` (temporary, gitignored)
+4. **Change output location**: Instruct AI to save to `.rpi/[feature-name]/research.md` (supports concurrent workflows)
 5. **Add human approval step**: Instruct AI to request approval before proceeding to plan phase
 
 **What to remove from prompt instructions**:
@@ -150,14 +150,14 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 - ✅ `prompts/RPI-1-research.md` updated with new instructions
 - ✅ AI generates minimal markdown output
 - ✅ AI uses Explore agents as instructed
-- ✅ Output saved to `.rpi/research.md`
+- ✅ Output saved to `.rpi/[feature-name]/research.md` (supports concurrent workflows)
 
 ### Week 3: Adapt `RPI-2-plan.md` prompt (from `SDD-2-generate-task-list-from-spec.md`)
 
 **Modify the prompt instructions to:**
 1. **Simplify task format**: Instruct AI to create concise task descriptions
 2. **Change output format**: Instruct AI to create minimal markdown (30-50 lines total)
-3. **Read from research**: Instruct AI to load `.rpi/research.md` as context
+3. **Read from research**: Instruct AI to load `.rpi/[feature-name]/research.md` as context
 4. **Streamline task details**: Instruct AI to include only steps and verification criteria
 5. **Keep dependency tracking**: Task relationships still important for execution order
 
@@ -184,14 +184,14 @@ This roadmap outlines the path from current SDD to RPI by **forking and adapting
 **Deliverables**:
 - ✅ `prompts/RPI-2-plan.md` updated with new instructions
 - ✅ AI generates minimal markdown output
-- ✅ AI reads and references `.rpi/research.md`
-- ✅ Output saved to `.rpi/plan.md`
+- ✅ AI reads and references `.rpi/[feature-name]/research.md`
+- ✅ Output saved to `.rpi/[feature-name]/plan.md`
 
 ### Week 4: Adapt `RPI-3-implement.md` & `RPI-4-proof.md` prompts
 
 **Modify `RPI-3-implement.md` prompt** (from `SDD-3-manage-tasks.md`):
 - **Keep task execution logic**: Task-by-task implementation works well
-- **Read from plan**: Instruct AI to load `.rpi/plan.md`
+- **Read from plan**: Instruct AI to load `.rpi/[feature-name]/plan.md`
 - **Simplify verification**: Instruct AI to use less verbose proof requirements
 - **Remove**: Instructions for detailed proof artifact generation during implementation
 
@@ -207,6 +207,10 @@ After creating the summary document:
 1. Commit the summary to the repository
 2. Delete the temporary research and plan files:
    ```bash
+   rm -rf .rpi/[feature-name]/
+   ```
+   Or to clean up all completed RPI workflows:
+   ```bash
    rm -rf .rpi/
    ```
 ```
@@ -221,7 +225,7 @@ After creating the summary document:
 **Deliverables**:
 - ✅ `prompts/RPI-3-implement.md` updated with simplified instructions
 - ✅ `prompts/RPI-4-proof.md` updated with auto-generation and cleanup instructions
-- ✅ AI deletes `.rpi/` directory after summary creation
+- ✅ AI deletes `.rpi/[feature-name]/` directory after summary creation
 - ✅ Summary generation produces minimal, human-focused output
 
 ---
