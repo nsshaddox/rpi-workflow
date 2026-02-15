@@ -162,17 +162,15 @@ Create `.rpi/[feature-name]/plan.md` using this **exact format**:
 
 ### Step 6: Request Human Approval
 
-After creating `.rpi/[feature-name]/plan.md`, show the user:
+After creating `.rpi/[feature-name]/plan.md`, show the user a summary and request approval:
 
 1. Number of tasks and estimated complexity
 2. Key dependencies between tasks
 3. Overall implementation approach (1-2 sentences)
 
-Ask: **"Does this plan capture the right sequence and approach? Should I proceed to implementation?"**
+Ask: **"Does this plan capture the right sequence and approach?"**
 
-**STOP and WAIT for user approval** before suggesting next steps.
-
-If approved, instruct the user to run `/rpi-3-implement [feature-name]` to proceed to the Implement phase.
+Then immediately instruct: **"If approved, run `/rpi-3-implement [feature-name]` to proceed to the Implement phase."**
 
 ## Output Requirements
 
