@@ -184,11 +184,13 @@ Ask: **"Does this plan capture the right sequence and approach?"**
 
 Then immediately instruct:
 
-**Important**: After user approval, tell them:
+**Important**: After showing the plan, tell them:
 
-> Plan approved!
+> Does this plan look good?
 >
-> **Next command:** `/rpi-3-implement [feature-name]`
+> **Next command:** `/RPI-3-implement [feature-name]`
+
+**CRITICAL**: Always show the "Next command" line in your approval request. Do not wait for approval to suggest the next step.
 
 ## Output Requirements
 

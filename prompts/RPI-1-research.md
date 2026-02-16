@@ -168,17 +168,13 @@ After creating `.rpi/[feature-name]/research.md`, show the user:
 2. Key findings summary (3-4 bullets)
 3. Recommended approach (1-2 sentences)
 
-Ask: **"Does this research capture the right scope and approach? Should I proceed to planning?"**
+**Then immediately tell them the next command:**
 
-**STOP and WAIT for user approval** before suggesting next steps.
-
-If approved, instruct the user to run `/rpi-2-plan [feature-name]` to proceed to the Plan phase.
-
-**Important**: After user approval, tell them:
-
-> Research approved!
+> Does this research capture the right scope and approach?
 >
-> **Next command:** `/rpi-2-plan [feature-name]`
+> **Next command:** `/RPI-2-plan [feature-name]`
+
+**CRITICAL**: Always show the "Next command" line in your approval request. Do not wait for approval to suggest the next step.
 
 ## Output Requirements
 
@@ -225,7 +221,9 @@ If approved, instruct the user to run `/rpi-2-plan [feature-name]` to proceed to
 
 ## What Comes Next
 
-Once research is approved by the user, they should run `/rpi-2-plan [feature-name]` to start the Plan phase, which will:
+After showing research findings, you MUST tell the user the next command: `/RPI-2-plan [feature-name]`
+
+This starts the Plan phase, which will:
 
 - Read `.rpi/[feature-name]/research.md` for context
 - Break work into specific tasks
