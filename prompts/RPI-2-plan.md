@@ -28,7 +28,7 @@ You have completed the **Research phase** and now need to break the implementati
 
 **RPI workflow:**
 
-- **Research → Plan** (current): Research findings → minimal plan (30-50 lines, temporary)
+- **Research → Plan** (current): Research findings → minimal plan (max 50 lines, temporary)
 - **Plan → Implement**: Task list → working code (committed)
 - **Implement → Proof**: Execution → what/why summary (30-40 lines, committed)
 
@@ -40,7 +40,7 @@ You are a **Technical Planner** responsible for breaking research findings into 
 
 ## Goal
 
-Create a **minimal plan document** (30-50 lines) that defines:
+Create a **minimal plan document** (max 50 lines) that defines:
 
 - Tasks with clear dependencies
 - Specific files to modify with code approach
@@ -115,23 +115,32 @@ Create `.rpi/[feature-name]/plan.md` using this **exact format**:
 
 ## Tasks
 
-**Task 1**: [Action verb] [what to do]
+**Task 1.0**: [Action verb] [what to do]
+- **Sub-tasks**:
+  - [ ] 1.1: [Specific sub-task action]
+  - [ ] 1.2: [Specific sub-task action]
+  - [ ] 1.3: [Specific sub-task action]
 - **Files**: `[file_path]` - [brief change description]
 - **Approach**: [1-2 lines on how to implement]
 - **Verify**: [command or manual check]
 - **Depends**: None
 
-**Task 2**: [Action verb] [what to do]
+**Task 2.0**: [Action verb] [what to do]
+- **Sub-tasks**:
+  - [ ] 2.1: [Specific sub-task action]
+  - [ ] 2.2: [Specific sub-task action]
 - **Files**: `[file_path]`, `[file_path]` - [brief change description]
 - **Approach**: [1-2 lines on how to implement]
 - **Verify**: [command or manual check]
-- **Depends**: Task 1
+- **Depends**: Task 1.0
 
-**Task 3**: [Action verb] [what to do]
+**Task 3.0**: [Action verb] [what to do]
+- **Sub-tasks**:
+  - [ ] 3.1: [Specific sub-task action]
 - **Files**: `[file_path]` - [brief change description]
 - **Approach**: [1-2 lines on how to implement]
 - **Verify**: [command or manual check]
-- **Depends**: Task 1, Task 2
+- **Depends**: Task 1.0, Task 2.0
 
 ## Success Criteria
 
@@ -140,13 +149,14 @@ Create `.rpi/[feature-name]/plan.md` using this **exact format**:
 - [Criterion 3 - what must be verified]
 ```
 
-#### Target: 30-50 lines total
+#### Target: Plan can run longer than research (max 80 lines acceptable)
 
 **What to include:**
 
 - Brief summary of research context
-- 3-7 tasks with clear actions
-- Specific file paths for each task
+- 3-7 parent tasks (1.0, 2.0, 3.0...) with clear actions
+- 2-4 sub-tasks per parent task (1.1, 1.2, 1.3...)
+- Specific file paths for each parent task
 - Brief approach (not detailed code)
 - Verification command or check
 - Task dependencies
@@ -160,6 +170,8 @@ Create `.rpi/[feature-name]/plan.md` using this **exact format**:
 - Edge cases or error handling details
 - Proof artifacts (auto-generated in Implement phase)
 
+**Note:** Plan files can run longer than research files (max 80 lines acceptable) to accommodate sub-task breakdown.
+
 ### Step 6: Request Human Approval
 
 After creating `.rpi/[feature-name]/plan.md`, show the user a summary and request approval:
@@ -170,11 +182,17 @@ After creating `.rpi/[feature-name]/plan.md`, show the user a summary and reques
 
 Ask: **"Does this plan capture the right sequence and approach?"**
 
-Then immediately instruct: **"If approved, run `/rpi-3-implement [feature-name]` to proceed to the Implement phase."**
+Then immediately instruct:
+
+**Important**: After user approval, tell them:
+
+> Plan approved!
+>
+> **Next command:** `/rpi-3-implement [feature-name]`
 
 ## Output Requirements
 
-**Format:** Minimal markdown (30-50 lines)
+**Format:** Minimal markdown (max 80 lines, can be longer than research)
 **Path:** `.rpi/[feature-name]/plan.md`
 **Lifecycle:** Temporary - can be removed after implementation
 
@@ -204,9 +222,10 @@ Then immediately instruct: **"If approved, run `/rpi-3-implement [feature-name]`
 **ALWAYS:**
 
 - Read `.rpi/[feature-name]/research.md` first
-- Keep plan document minimal (30-50 lines)
-- Specify exact file paths for each task
-- Include verification steps for each task
+- Keep plan document focused but allow max 80 lines for sub-task breakdown
+- Use parent task numbering (1.0, 2.0, 3.0) with sub-tasks (1.1, 1.2, 1.3)
+- Specify exact file paths for each parent task
+- Include verification steps for each parent task
 - Define task dependencies clearly
 - Save output to `.rpi/[feature-name]/plan.md` (supports concurrent workflows)
 - Request human approval before proceeding
@@ -217,13 +236,14 @@ Then immediately instruct: **"If approved, run `/rpi-3-implement [feature-name]`
 Before finalizing your plan, verify:
 
 - [ ] Read research document from previous phase
-- [ ] 3-7 tasks based on complexity assessment
-- [ ] Each task has specific file paths
-- [ ] Each task has brief approach (1-2 lines)
-- [ ] Each task has verification step
+- [ ] 3-7 parent tasks (1.0, 2.0, 3.0...) based on complexity assessment
+- [ ] Each parent task has 2-4 sub-tasks (1.1, 1.2, 1.3...)
+- [ ] Each parent task has specific file paths
+- [ ] Each parent task has brief approach (1-2 lines)
+- [ ] Each parent task has verification step
 - [ ] Dependencies are clearly marked
 - [ ] Success criteria are defined
-- [ ] Format follows the exact structure (30-50 lines)
+- [ ] Format follows the exact structure (max 80 lines acceptable)
 - [ ] Plan is actionable by AI in Implement phase
 
 ## What Comes Next

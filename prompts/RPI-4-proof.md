@@ -31,17 +31,17 @@ You have completed the **Implementation phase** and are now entering the **Proof
 
 - **Research → Plan**: Research findings → minimal plan (30-50 lines, temporary)
 - **Plan → Implement**: Task list → working code (committed)
-- **Implement → Proof** (current): Validation → summary (30-40 lines, committed) + cleanup
+- **Implement → Proof** (current): Validation → summary (max 40 lines, committed) + cleanup
 
 **Key principle**: Proof phase generates a **permanent, minimal summary** of "what changed and why" for human readers. Temporary scaffolding artifacts in `.rpi/[feature-name]/` are no longer needed and can be removed.
 
 ## Your Role
 
-You are a **Technical Documenter** who creates concise, high-level summaries of implementation work. Your goal is to capture "what changed and why" in 30-40 lines for future reference, validate the implementation, and clean up temporary artifacts.
+You are a **Technical Documenter** who creates concise, high-level summaries of implementation work. Your goal is to capture "what changed and why" in max 40 lines for future reference, validate the implementation, and clean up temporary artifacts.
 
 ## Goal
 
-Create a **minimal summary document** (30-40 lines) that captures what changed and why, validate the implementation against the plan, and clean up temporary artifacts.
+Create a **minimal summary document** (max 40 lines) that captures what changed and why, validate the implementation against the plan, and clean up temporary artifacts.
 
 **Output location**: `docs/rpi/[feature-name].md` (permanent, committed to repo)
 
@@ -138,7 +138,7 @@ Create `docs/rpi/[feature-name].md` with this **exact format**:
 - [✓] Manual: [functionality confirmed or specific test performed]
 ```
 
-#### Target: 30-40 lines total
+#### Target: max 40 lines total
 
 **What to include:**
 
@@ -174,7 +174,7 @@ Let the user decide when to remove these files.
 
 ## Output Requirements
 
-**Format:** Minimal markdown (30-40 lines)
+**Format:** Minimal markdown (max 40 lines)
 **Path:** `docs/rpi/[feature-name].md` (permanent, committed to repo)
 **Lifecycle:** Permanent - this is the only documentation artifact that persists
 
@@ -192,7 +192,7 @@ Let the user decide when to remove these files.
 **ALWAYS:**
 
 - Read both `.rpi/[feature-name]/plan.md` and `.rpi/[feature-name]/research.md`
-- Keep summary document minimal (30-40 lines)
+- Keep summary document minimal (max 40 lines)
 - Focus on "what changed and why" not "how it was implemented"
 - Save output to `docs/rpi/[feature-name].md`
 - **Inform user that `.rpi/[feature-name]/` directory can be removed after summary is created**
@@ -222,7 +222,7 @@ docs/rpi/
     └── plan.md
 
 docs/rpi/
-└── [feature-name].md  (permanent summary, 30-40 lines)
+└── [feature-name].md  (permanent summary, max 40 lines)
 ```
 
 ## Quality Checklist
@@ -232,7 +232,7 @@ Before completing the proof phase, verify:
 - [ ] Read plan and research files
 - [ ] Analyzed git commits and changes
 - [ ] Ran verification checks from plan
-- [ ] Generated summary document (30-40 lines)
+- [ ] Generated summary document (max 40 lines)
 - [ ] Saved to `docs/rpi/[feature-name].md`
 - [ ] **Informed user that `.rpi/[feature-name]/` directory can be removed**
 - [ ] Summary follows the exact format
@@ -246,12 +246,18 @@ Once the proof phase is complete:
 2. **Ready for commit**: Working code + summary document ready to commit
 3. **Workflow complete**: Research → Plan → Implement → Proof cycle finished
 
-Instruct the user to:
+Instruct the user:
 
-- Review the summary document
-- Commit the implementation and summary together
-- Remove `.rpi/[feature-name]/` directory if desired (temporary artifacts no longer needed)
-- Create a PR if needed (use `/create-pull-request` skill)
+**Important**: After proof generation, tell them:
+
+> Proof phase complete! Summary generated at `docs/rpi/[feature-name].md`
+>
+> **Next steps:**
+>
+> 1. Review the summary document: `docs/rpi/[feature-name].md`
+> 2. Commit the summary: `git add docs/rpi/[feature-name].md && git commit -m "docs: add [feature-name] implementation summary"`
+> 3. Remove temporary artifacts: `rm -rf .rpi/[feature-name]/`
+> 4. (Optional) Create a PR: `/create-pull-request`
 
 ---
 

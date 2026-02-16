@@ -104,38 +104,41 @@ For each task in the plan, follow this streamlined workflow:
 ```markdown
 ## TASK EXECUTION PROTOCOL
 
-For each task in the plan:
+For each parent task in the plan:
 
-1. **Understand Task**: Read the task description, steps, and verification criteria
-2. **Check Dependencies**: Ensure any dependent tasks are completed first
-3. **Implement**: Write the code following repository patterns and the planned approach
-4. **Verify**: Run the verification steps specified in the task
+1. **Mark In Progress**: Update parent task status to `[~]` in plan file
+2. **Execute Sub-tasks**: For each sub-task in the parent task:
+   - Mark sub-task as `[~]` in plan file
+   - Implement the sub-task following repository patterns
+   - Verify the sub-task works as expected
+   - Mark sub-task as `[x]` in plan file
+   - Save plan file after each sub-task update
+3. **Verify Parent Task**: Run the verification steps specified for the parent task
    - Execute tests if specified
    - Run quality checks (linting, formatting) if needed
    - Manually test functionality if required
-5. **Commit**: Create a git commit for significant tasks or logical boundaries
+4. **Mark Complete**: Update parent task status to `[x]` in plan file
+5. **DO NOT COMMIT**: Let user verify functionality before committing
 
-**VERIFICATION**: Confirm verification criteria are met before marking task complete
+**VERIFICATION**: Confirm verification criteria are met before marking parent task complete
+**USER VERIFICATION**: Wait for user to verify functionality before proceeding
 ```
 
-### Phase 3: Task Completion
+### Phase 3: Parent Task Completion
 
 ```markdown
-## TASK COMPLETION CHECKLIST
+## PARENT TASK COMPLETION CHECKLIST
 
-For significant tasks (or logical groups of small tasks):
+For each parent task (after all sub-tasks are `[x]`):
 
 [ ] **Verify Functionality**: Ensure the implementation works as intended
 [ ] **Run Tests**: Execute relevant test commands if available
 [ ] **Quality Check**: Run linting/formatting if the repository has pre-commit hooks
-[ ] **Create Commit**: Commit the changes with a clear message
+[ ] **Mark Parent Task Complete**: Update parent task status to `[x]` in plan file
+[ ] **DO NOT COMMIT YET**: Inform user that task is complete and ready for verification
 
-    ```bash
-    git add .
-    git commit -m "[type]: [clear description of what was implemented]"
-    ```
-
-**SIMPLE VERIFICATION**: Code works and tests pass before moving to next task
+**SIMPLE VERIFICATION**: Code works and tests pass before moving to next parent task
+**USER VERIFICATION REQUIRED**: User must verify functionality before any commits are made
 ```
 
 ## Plan File Location
@@ -145,21 +148,34 @@ For significant tasks (or logical groups of small tasks):
 
 ### Task Execution Guidelines
 
-1. Follow tasks in the order specified in the plan
-2. Respect task dependencies
-3. Verify each task meets its verification criteria before moving to the next
-4. Commit at logical boundaries (typically after completing significant tasks)
+1. Follow parent tasks in the order specified in the plan (1.0, 2.0, 3.0...)
+2. Execute sub-tasks sequentially within each parent task (1.1, 1.2, 1.3...)
+3. Respect task dependencies
+4. Update plan file as you work (mark sub-tasks and parent tasks with `[~]` in progress, `[x]` complete)
+5. Verify each parent task meets its verification criteria before moving to the next
+6. DO NOT commit automatically - let user verify functionality first
 
 ## Git Workflow Protocol
 
-### Commit Requirements
+### IMPORTANT: No Automatic Commits
 
-- **Frequency**: Commit at logical boundaries (after completing significant tasks or groups of related tasks)
+- **DO NOT commit automatically** - User needs to verify functionality first
+- After completing tasks, inform the user:
+  - What was implemented
+  - What verification was performed
+  - That they should test/verify before committing
+
+### User Commit Guidelines (for reference)
+
+When the user is ready to commit, they should:
+
+- **Frequency**: Commit at logical boundaries (after verifying parent tasks work)
 - **Format**: Use conventional commits (feat:, fix:, refactor:, etc.)
 - **Content**: Include all code changes for the logical unit of work
 - **Message**: Clear and descriptive
 
   ```bash
+  git add .
   git commit -m "[type]: [clear description of what was implemented]"
   ```
 
@@ -176,7 +192,9 @@ After completing all tasks in the plan:
 1. **Final Verification**: Run the full test suite if available
 2. **Quality Check**: Ensure all quality gates pass (linting, formatting, pre-commit hooks)
 3. **Manual Testing**: Verify the feature works as intended
-4. **Handoff**: Instruct user to proceed to `/RPI-4-proof`
+4. **Inform User**: Tell user what was implemented and ask them to verify functionality
+5. **User Commits**: After user verifies and commits their changes
+6. **Next Command**: Instruct user to run `/RPI-4-proof [feature-name]` to generate summary and cleanup
 
 The proof phase will auto-generate a summary from git diff and test output, then clean up the temporary `.rpi/` directory.
 
@@ -216,20 +234,35 @@ If you encounter issues:
 
 Implementation is successful when:
 
-- All tasks from the plan are completed
-- Each task's verification criteria are met
+- All parent tasks from the plan are completed (marked `[x]`)
+- All sub-tasks within each parent task are completed (marked `[x]`)
+- Each parent task's verification criteria are met
 - Tests pass (if the repository has tests)
 - Code follows repository patterns and conventions
 - The feature works as intended
 - Quality gates pass (linting, formatting, pre-commit hooks)
-- Commits are clean and represent logical units of work
+- Plan file is updated with task progress
+- User has verified functionality (before any commits)
 
 ## What Comes Next
 
-Once implementation is complete, instruct the user to run `/RPI-4-proof` to:
+Once implementation is complete and user has verified functionality:
 
-1. Auto-generate a summary from git diff and test output
-2. Create a concise "what/why" document (30-40 lines)
-3. Clean up temporary `.rpi/` directory
+1. **User verifies**: User tests the implementation to ensure it works
+2. **User commits**: User commits the changes when satisfied
+3. **Next command**: User runs `/RPI-4-proof [feature-name]` to:
+   - Auto-generate a summary from git diff and test output
+   - Create a concise "what/why" document (30-40 lines)
+   - Clean up temporary `.rpi/` directory
 
 This maintains the workflow's progression: Research → Plan → Implement → Proof.
+
+**Important**: After completing all tasks, inform the user:
+
+> Implementation complete! All tasks have been finished and verified.
+>
+> **Next steps:**
+>
+> 1. Please verify the functionality works as expected
+> 2. Commit your changes with: `git add . && git commit -m "feat: [description]"`
+> 3. Run `/RPI-4-proof [feature-name]` to generate summary and cleanup

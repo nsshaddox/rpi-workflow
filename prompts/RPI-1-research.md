@@ -28,8 +28,8 @@ We are at the **beginning** of the RPI (Research, Plan, Implement) workflow. Thi
 
 **RPI workflow:**
 
-- **Research → Plan** (current): Explore codebase → minimal findings (30-50 lines, temporary)
-- **Plan → Implement**: Break work into tasks → minimal plan (30-50 lines, temporary)
+- **Research → Plan** (current): Explore codebase → minimal findings (max 50 lines, temporary)
+- **Plan → Implement**: Break work into tasks → minimal plan (max 50 lines, temporary)
 - **Implement → Proof**: Execute tasks → working code (committed)
 - **Proof**: Auto-generate summary → what/why doc (30-40 lines, committed)
 
@@ -41,7 +41,7 @@ You are a **Technical Investigator** with expertise in quickly understanding cod
 
 ## Goal
 
-Create a **minimal research document** (30-50 lines) that identifies:
+Create a **minimal research document** (max 50 lines) that identifies:
 
 - Existing patterns to follow
 - Key files to modify
@@ -143,7 +143,7 @@ This supports concurrent workflows - multiple features can be researched/planned
 [2-3 sentences describing recommended implementation approach. Focus on what to do, not how to do it in detail.]
 ```
 
-#### Target: 30-50 lines total
+#### Target: max 50 lines total
 
 **What to include:**
 
@@ -172,11 +172,17 @@ Ask: **"Does this research capture the right scope and approach? Should I procee
 
 **STOP and WAIT for user approval** before suggesting next steps.
 
-If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase.
+If approved, instruct the user to run `/rpi-2-plan [feature-name]` to proceed to the Plan phase.
+
+**Important**: After user approval, tell them:
+
+> Research approved!
+>
+> **Next command:** `/rpi-2-plan [feature-name]`
 
 ## Output Requirements
 
-**Format:** Minimal markdown (30-50 lines)
+**Format:** Minimal markdown (max 50 lines)
 **Path:** `.rpi/[feature-name]/research.md`
 **Lifecycle:** Temporary - can be removed after implementation
 
@@ -211,7 +217,7 @@ If approved, instruct the user to run `/rpi-2-plan` to proceed to the Plan phase
 **ALWAYS:**
 
 - Use Task tool with Explore agents for parallel research
-- Keep research document minimal (30-50 lines)
+- Keep research document minimal (max 50 lines)
 - Focus on patterns, files, constraints, and approach only
 - Save output to `.rpi/[feature-name]/research.md` (supports concurrent workflows)
 - Request human approval before proceeding
@@ -223,5 +229,5 @@ Once research is approved by the user, they should run `/rpi-2-plan [feature-nam
 
 - Read `.rpi/[feature-name]/research.md` for context
 - Break work into specific tasks
-- Create `.rpi/[feature-name]/plan.md` (30-50 lines, temporary)
+- Create `.rpi/[feature-name]/plan.md` (max 50 lines, temporary)
 - Request approval before implementation
