@@ -4,7 +4,6 @@ description: "Validate research document against FAR rubric before proceeding to
 tags:
   - research
   - validation
-argument-hint: [CONTEXT]
 arguments: []
 meta:
   category: rpi-workflow

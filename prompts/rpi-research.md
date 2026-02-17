@@ -4,7 +4,6 @@ description: "Research phase: Explore codebase and identify patterns for feature
 tags:
   - research
   - exploration
-argument-hint: [Problem Statement]
 arguments: []
 meta:
   category: rpi-workflow
