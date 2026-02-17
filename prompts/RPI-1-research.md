@@ -1,5 +1,5 @@
 ---
-name: RPI-1-research
+name: rpi:research
 description: "Research phase: Explore codebase and identify patterns for feature implementation"
 tags:
   - research
@@ -18,7 +18,7 @@ PROBLEM_STATEMENT = $ARGUMENTS
 SHORT_NAME = kebab-case version of problem statement (e.g., "Fix login authentication bug" → "fix-login-authentication-bug")
 OUTPUT_DIR = ./rpi/[SHORT_NAME]/
 OUTPUT_FILE = ./rpi/[SHORT_NAME]/research.md
-LINE_COUNT = ~80
+LINE_COUNT = ~100
 
 ## Context Marker
 
@@ -55,7 +55,7 @@ This command executes the Research phase of the RPI Strategy by:
    - Agent 3: Discover similar implementations and patterns
 
 2. **Parallel Web Research**: Launch web search agent simultaneously
-   - Find Factual, Actionable, and Relevant external information
+   - Agent 4: Find Factual, Actionable, and Relevant external information
 
 3. **Synthesis**: Compile all findings into a structured research document
    - Follow RPI Strategy Research phase output format
@@ -166,6 +166,26 @@ Based on research findings, categorize the feature:
 - [Testing requirement]
 - [Observability]
 
+## Testing Strategy
+
+- [Unit test touchpoints from codebase analysis]
+- [Integration/contract surfaces]
+- [Observability: logs, metrics, traces]
+- [Repro steps if defect]
+- [Risk areas needing characterization tests]
+
+## Assumptions
+
+- [Enumerated, falsifiable statement 1]
+- [Enumerated, falsifiable statement 2]
+[Each must be testable or confirmable during Plan/Implement phases]
+
+## Out of Scope
+
+- [Explicit exclusion 1]
+- [Explicit exclusion 2]
+[Prevents scope creep into Plan phase]
+
 ## Approach
 
 [Recommended implementation approach. Focus on what to do, not how to do it in detail.]
@@ -188,7 +208,20 @@ Based on research findings, categorize the feature:
 - Edge cases documentation
 - Anything not essential for planning
 
-### Step 5: Request Human Approval
+### Step 5: Quality Gates
+
+Before completing, verify:
+
+- All parallel agents completed successfully
+- Every file path in "Key Files" exists in the codebase
+- All assumptions have a validation step or deferral note
+- FAR table has numeric values and computed mean
+- Output file created at correct path
+- Research document fits within ~[LINE_COUNT] lines
+
+If any gate fails, fix the issue before proceeding.
+
+### Step 6: Request Human Approval
 
 After creating `.rpi/[SHORT_NAME]/research.md`, show the user:
 
@@ -199,26 +232,9 @@ After creating `.rpi/[SHORT_NAME]/research.md`, show the user:
 **Then immediately tell them the next command:**
 
 > Does this research capture the right scope and approach?
+> [Link to file]
 >
 > **Next command:** `/RPI-2-plan [SHORT_NAME]`
-
-## Output Requirements
-
-**Format:** Minimal markdown
-**Path:** [OUTPUT_FILE]
-**Lifecycle:** Temporary - can be removed after implementation
-
-**Directory Structure:**
-
-```text
-.rpi/
-├── user-auth/
-│   └── research.md
-├── payment-flow/
-│   └── research.md
-└── admin-panel/
-    └── research.md
-```
 
 ## FAR Scale (Used by Web Researcher)
 
@@ -252,28 +268,5 @@ Structure findings with:
 
 ## Critical Constraints
 
-**NEVER:**
-
-- Perform manual Glob/Grep searches - always use Explore agents
-- Create verbose documentation or detailed specifications
-- Include detailed requirements or acceptance criteria
-
-**ALWAYS:**
-
-- Use Task tool with Explore agents for parallel research
-- Focus on patterns, files, constraints, and approach only
-- Save output to `[repo-path]/.rpi/[SHORT_NAME]/research.md` (supports concurrent workflows)
-- Inform the user of the next slash command
-- Assess if feature is appropriate size for RPI workflow
 - Synthesis should integrate findings, not just concatenate them
 - Apply critical thinking when assessing FAR scores
-
-## What Comes Next
-
-After showing research findings, you MUST tell the user the next command: `/RPI-2-plan [SHORT_NAME]`
-
-This starts the Plan phase, which will:
-
-- Read `.rpi/[SHORT_NAME]/research.md` for context
-- Break work into specific tasks
-- Create `.rpi/[SHORT_NAME]/plan.md`
