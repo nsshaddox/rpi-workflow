@@ -5,6 +5,7 @@ tags:
   - research
   - validation
 argument-hint: [CONTEXT]
+arguments: []
 meta:
   category: rpi-workflow
   allowed-tools: Read

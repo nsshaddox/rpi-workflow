@@ -5,6 +5,7 @@ tags:
   - research
   - exploration
 argument-hint: [Problem Statement]
+arguments: []
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
