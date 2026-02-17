@@ -2,12 +2,12 @@
 name: rpi-validate-research
 description: "Validate research document against FAR rubric before proceeding to Plan phase"
 tags:
-  - research
-  - validation
+  - planning
+  - tasks
 arguments: []
 meta:
   category: rpi-workflow
-  allowed-tools: Read
+  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
 # RPI Validate Research
