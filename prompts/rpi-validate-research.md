@@ -1,5 +1,5 @@
 ---
-name: rpi:validate-research
+name: rpi-validate-research
 description: "Validate research document against FAR rubric before proceeding to Plan phase"
 tags:
   - research
@@ -56,7 +56,7 @@ You are a **Research Validator** who objectively evaluates research quality. You
 1. Resolve SHORT_NAME using the priority in Variables above
 2. Construct path: `./rpi/[SHORT_NAME]/research.md`
 3. Read the file and verify it exists and is non-empty
-4. If the file does not exist, tell the user and suggest running `/rpi:research` first
+4. If the file does not exist, tell the user and suggest running `/rpi-research` first
 
 ### Step 2: Check Structural Completeness
 
@@ -142,7 +142,7 @@ Assumptions: [VALID/ISSUES]
 
 [If PASS:]
 VERDICT: Research meets FAR criteria. Ready for Plan phase.
-Next command: /rpi:plan [SHORT_NAME]
+Next command: /rpi-plan [SHORT_NAME]
 
 [If FAIL:]
 VERDICT: Research does not meet FAR criteria.
@@ -156,7 +156,7 @@ RECOMMENDATIONS:
 - [Specific gap and what to add/fix]
 - [Specific gap and what to add/fix]
 
-Next step: Address recommendations and re-run /rpi:research
+Next step: Address recommendations and re-run /rpi-research
 ```
 
 ## Critical Constraints

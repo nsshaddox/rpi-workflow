@@ -1,5 +1,5 @@
 ---
-name: rpi:research
+name: rpi-research
 description: "Research phase: Explore codebase and identify patterns for feature implementation"
 tags:
   - research
