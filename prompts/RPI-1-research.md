@@ -4,13 +4,21 @@ description: "Research phase: Explore codebase and identify patterns for feature
 tags:
   - research
   - exploration
-arguments: []
+argument-hint: [Problem Statement]
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
 # RPI Research Phase
+
+## Variables
+
+PROBLEM_STATEMENT = $ARGUMENTS
+SHORT_NAME = kebab-case version of problem statement (e.g., "Fix login authentication bug" → "fix-login-authentication-bug")
+OUTPUT_DIR = ./rpi/[SHORT_NAME]/
+OUTPUT_FILE = ./rpi/[SHORT_NAME]/research.md
+LINE_COUNT = ~80
 
 ## Context Marker
 
@@ -28,27 +36,31 @@ We are at the **beginning** of the RPI (Research, Plan, Implement) workflow. Thi
 
 **RPI workflow:**
 
-- **Research → Plan** (current): Explore codebase → minimal findings (max 50 lines, temporary)
-- **Plan → Implement**: Break work into tasks → minimal plan (max 50 lines, temporary)
-- **Implement → Proof**: Execute tasks → working code (committed)
-- **Proof**: Auto-generate summary → what/why doc (30-40 lines, committed)
-
-**Key principle**: Research artifacts are **temporary scaffolding** for AI execution, optimized for machine parsing, not human reading. They can be removed after implementation.
+- **Research → Plan** (current): Explore codebase
+- **Plan → Implement**: Break work into tasks
+- **Implement → Proof**: Execute tasks
+- **Proof**: Auto-generate summary
 
 ## Your Role
 
 You are a **Technical Investigator** with expertise in quickly understanding codebases and identifying implementation patterns. Your goal is to gather just enough information to plan the implementation effectively.
 
-## Goal
+## Overview
 
-Create a **minimal research document** (max 50 lines) that identifies:
+This command executes the Research phase of the RPI Strategy by:
 
-- Existing patterns to follow
-- Key files to modify
-- Technical constraints
-- Recommended approach
+1. **Parallel Codebase Research**: Launch three specialized codebase agents simultaneously
+   - Agent 1: Find WHERE relevant code exists
+   - Agent 2: Two - Understand HOW the code works
+   - Agent 3: Discover similar implementations and patterns
 
-**Output location**: `.rpi/[feature-name]/research.md` (temporary, can be removed after implementation)
+2. **Parallel Web Research**: Launch web search agent simultaneously
+   - Find Factual, Actionable, and Relevant external information
+
+3. **Synthesis**: Compile all findings into a structured research document
+   - Follow RPI Strategy Research phase output format
+   - Include FAR Scale validation
+   - Output to [OUPUT_FILE]
 
 ## Research Process
 
@@ -64,9 +76,9 @@ Keep this brief - 2-3 questions maximum. We're gathering just enough to start re
 
 ### Step 2: Use Explore Agents for Parallel Research
 
-**CRITICAL**: Use the Task tool with `subagent_type="Explore"` to spawn parallel research agents. Do NOT perform manual Glob/Grep searches yourself.
+**CRITICAL**: Use the Task tool with `subagent_type="Explore"` to spawn parallel research agents.
 
-**Spawn 2-4 Explore agents in parallel** to investigate:
+**Spawn Explore agents in parallel** to investigate:
 
 - Similar features or patterns in the codebase
 - Files that will need modification
@@ -83,13 +95,6 @@ Task 3: "Locate testing patterns for [feature type] - find test files and unders
 Task 4: "Search for [specific pattern/library] usage - understand how the codebase currently uses this pattern"
 ```
 
-**Why use Explore agents:**
-
-- Parallel exploration is faster than sequential
-- Agents can search deeply without cluttering your context
-- Reduces your cognitive load
-- Each agent returns focused findings
-
 **Important**: Call multiple Task tools in a single response to run agents in parallel. Wait for all agents to complete before proceeding to Step 3.
 
 ### Step 3: Assess Complexity
@@ -105,21 +110,27 @@ Based on research findings, categorize the feature:
 
 ### Step 4: Create Feature Directory and Generate Research Document
 
-**First, create the feature directory:**
+**First, create the feature directory if it doesn't exists:**
 
-- **Path**: `.rpi/[feature-name]/`
+- **Path**: `.rpi/[SHORT_NAME]/`
 - **Naming**: Use lowercase with hyphens for feature name
 - **Examples**: `.rpi/user-auth/`, `.rpi/payment-flow/`, `.rpi/admin-panel/`
 
-This supports concurrent workflows - multiple features can be researched/planned simultaneously.
-
-**Then create `.rpi/[feature-name]/research.md`** using this **exact format**:
+**Then create `.rpi/[SHORT_NAME]/research.md`** using this **exact format**:
 
 ```markdown
-# Research: [FEATURE_NAME]
+# Research: [SHORT_NAME]
 
 **Complexity**: [simple|medium|complex]
 **Files**: [N] to modify
+
+## Problem Statement
+- Restated, clarified problem statement
+- Business/functional intent
+- Current vs desired behavior
+- Constraints (time, performance, compliance, environment)
+
+[Synthesize from all agent findings to provide concise context]
 
 ## Patterns
 
@@ -132,18 +143,35 @@ This supports concurrent workflows - multiple features can be researched/planned
 - `[file_path]` - [purpose and what needs to change]
 - `[file_path]` - [purpose and what needs to change]
 
+## FAR Scale Output
+
+### Factual Score: [1-5]
+[Evidence-based assessment with verifiable code/web references]
+
+### Actionable Score: [1-5]
+[Clear next steps identified from research]
+
+### Relevant Score: [1-5]
+[Solution addresses core problem and constraints]
+
+### Mean: [calculated]
+### Result: [PASS if mean ≥4.0, FAIL otherwise]
+
+[If FAIL: Document what additional research is needed]
+
 ## Constraints
 
 - [Technical constraint or dependency]
 - [Integration requirement]
 - [Testing requirement]
+- [Observability]
 
 ## Approach
 
-[2-3 sentences describing recommended implementation approach. Focus on what to do, not how to do it in detail.]
+[Recommended implementation approach. Focus on what to do, not how to do it in detail.]
 ```
 
-#### Target: max 50 lines total
+#### Target: max [LINE_COUNT]
 
 **What to include:**
 
@@ -162,7 +190,7 @@ This supports concurrent workflows - multiple features can be researched/planned
 
 ### Step 5: Request Human Approval
 
-After creating `.rpi/[feature-name]/research.md`, show the user:
+After creating `.rpi/[SHORT_NAME]/research.md`, show the user:
 
 1. The complexity assessment
 2. Key findings summary (3-4 bullets)
@@ -172,14 +200,12 @@ After creating `.rpi/[feature-name]/research.md`, show the user:
 
 > Does this research capture the right scope and approach?
 >
-> **Next command:** `/RPI-2-plan [feature-name]`
-
-**CRITICAL**: Always show the "Next command" line in your approval request. Do not wait for approval to suggest the next step.
+> **Next command:** `/RPI-2-plan [SHORT_NAME]`
 
 ## Output Requirements
 
-**Format:** Minimal markdown (max 50 lines)
-**Path:** `.rpi/[feature-name]/research.md`
+**Format:** Minimal markdown
+**Path:** [OUTPUT_FILE]
 **Lifecycle:** Temporary - can be removed after implementation
 
 **Directory Structure:**
@@ -194,10 +220,35 @@ After creating `.rpi/[feature-name]/research.md`, show the user:
     └── research.md
 ```
 
-**Directory Setup:**
+## FAR Scale (Used by Web Researcher)
 
-- Create `.rpi/[feature-name]/` directory (supports concurrent workflows)
-- Verify `.rpi/` is in `.gitignore` (should not be committed)
+**Factual (≥4.0)**: Find evidence-based information with verifiable sources
+
+- Official documentation for relevant frameworks/libraries
+- Technical specifications and standards
+- Benchmark data and performance metrics
+- Known issues, bugs, or limitations
+
+**Actionable (≥3.0)**: Find implementation guidance
+
+- Code examples and tutorials
+- API references and usage patterns
+- Configuration guides
+- Migration guides or upgrade paths
+
+**Relevant (≥3.0)**: Focus on information directly applicable to the problem
+
+- Solutions to similar problems
+- Best practices for the specific use case
+- Trade-offs and design decisions
+- Common pitfalls and gotchas
+
+Structure findings with:
+
+- Source URLs and publication dates
+- Relevance assessment for each finding
+- Key quotes and technical details
+- FAR score for overall research quality"
 
 ## Critical Constraints
 
@@ -206,26 +257,23 @@ After creating `.rpi/[feature-name]/research.md`, show the user:
 - Perform manual Glob/Grep searches - always use Explore agents
 - Create verbose documentation or detailed specifications
 - Include detailed requirements or acceptance criteria
-- Write more than 50 lines in the research document
-- Proceed to planning without human approval
-- Include edge cases or extensive technical details
 
 **ALWAYS:**
 
 - Use Task tool with Explore agents for parallel research
-- Keep research document minimal (max 50 lines)
 - Focus on patterns, files, constraints, and approach only
-- Save output to `.rpi/[feature-name]/research.md` (supports concurrent workflows)
-- Request human approval before proceeding
+- Save output to `[repo-path]/.rpi/[SHORT_NAME]/research.md` (supports concurrent workflows)
+- Inform the user of the next slash command
 - Assess if feature is appropriate size for RPI workflow
+- Synthesis should integrate findings, not just concatenate them
+- Apply critical thinking when assessing FAR scores
 
 ## What Comes Next
 
-After showing research findings, you MUST tell the user the next command: `/RPI-2-plan [feature-name]`
+After showing research findings, you MUST tell the user the next command: `/RPI-2-plan [SHORT_NAME]`
 
 This starts the Plan phase, which will:
 
-- Read `.rpi/[feature-name]/research.md` for context
+- Read `.rpi/[SHORT_NAME]/research.md` for context
 - Break work into specific tasks
-- Create `.rpi/[feature-name]/plan.md` (max 50 lines, temporary)
-- Request approval before implementation
+- Create `.rpi/[SHORT_NAME]/plan.md`
