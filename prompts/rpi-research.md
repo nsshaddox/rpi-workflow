@@ -41,7 +41,7 @@ We are at the **beginning** of the RPI (Research, Plan, Implement) workflow. Thi
 - **Research** (current): Explore codebase
 - **Plan**: Break work into tasks
 - **Implement**: Execute tasks
-- **Proof**: Generate results
+- **Recap**: Generate results
 
 ## Your Role
 

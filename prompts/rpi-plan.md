@@ -44,7 +44,7 @@ You have completed the **Research phase** and now need to break the implementati
 - **Research** (completed): Explore codebase
 - **Plan** (current): Break work into tasks
 - **Implement**: Execute tasks
-- **Proof**: Generate results
+- **Recap**: Generate results
 
 ## Your Role
 

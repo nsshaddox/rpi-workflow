@@ -44,7 +44,7 @@ We are **between Plan and Implement** in the RPI workflow. This validation gate 
 - **Research** (completed): Explore codebase
 - **Plan** (current): Break work into tasks
 - **Implement**: Execute tasks
-- **Proof**: Generate results
+- **Recap**: Generate results
 
 ## Your Role
 

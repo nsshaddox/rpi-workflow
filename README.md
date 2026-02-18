@@ -22,7 +22,7 @@ This repository provides **lightweight prompts** (Markdown files) that guide AI 
 - **Plan**: break work into actionable tasks (temporary)
 - **Validate Plan**: score plan against FACTS rubric before implementing
 - **Implement**: execute tasks with verification and quality gates
-- **Proof**: auto-generate summary and verify implementation (max 40 lines, permanent)
+- **Recap**: auto-generate summary and verify implementation (max 40 lines, permanent)
 
 RPI achieves **70%+ reduction in documentation** compared to traditional spec-driven approaches while maintaining code quality.
 
@@ -94,7 +94,7 @@ Copy the contents of a prompt file directly from `prompts/` and paste it into yo
 3. Run `/rpi-plan` to create an actionable implementation plan with tasks.
 4. Run `/rpi-validate-plan` to score the plan against the FACTS rubric before implementing.
 5. Run `/rpi-implement` to execute tasks with quality gates (no auto-commits - you verify first).
-6. Run `/rpi-proof` to generate a permanent summary and validate the implementation.
+6. Run `/rpi-recap` to generate a permanent summary and validate the implementation.
 
 ## Details for the 6-step workflow
 
@@ -125,7 +125,7 @@ Each step uses a different prompt file. RPI uses **temporary artifacts** (delete
    - **Output**: working code + updated `.rpi/[feature-name]/plan.md` with progress markers
    - **Why**: systematic implementation with built-in verification (no auto-commits - you verify first)
 
-6. **Proof** ([`prompts/rpi-proof.md`](./prompts/rpi-proof.md))
+6. **Recap** ([`prompts/rpi-recap.md`](./prompts/rpi-recap.md))
    - **What it does**: validates implementation against plan, auto-generates high-level "what/why" summary
    - **Output**: `docs/rpi/[feature-name].md` (max 40 lines, human-readable, **committed to repo**)
    - **Why**: provides human-focused documentation while cleaning up temporary AI artifacts
@@ -134,7 +134,7 @@ Each step uses a different prompt file. RPI uses **temporary artifacts** (delete
 
 ## Highlights
 
-- **Prompt-first workflow:** Use curated prompts to go from idea → research → validate → plan → validate → implement → proof.
+- **Prompt-first workflow:** Use curated prompts to go from idea → research → validate → plan → validate → implement → recap.
 - **Built-in quality gates:** FAR rubric validates research quality; FACTS rubric validates plan quality before implementation begins.
 - **70% documentation reduction:** Temporary artifacts are deleted after use—only high-level summaries are committed.
 - **No auto-commits:** You verify functionality before committing—AI doesn't push broken code.
@@ -165,7 +165,7 @@ AI-focused context stored in per-feature subdirectories under `.rpi/` during wor
 - **Research findings:** `.rpi/[feature-name]/research.md` (~100 lines, minimal markdown, AI-optimized)
 - **Implementation plan:** `.rpi/[feature-name]/plan.md` (structured task hierarchy with 1.0, 1.1, 1.2 format)
 
-These files are no longer needed after the Proof phase. They're optimized for AI parsing, not human consumption.
+These files are no longer needed after the Recap phase. They're optimized for AI parsing, not human consumption.
 
 ### Permanent artifacts (committed)
 
@@ -214,7 +214,7 @@ Each prompt includes a context verification marker that appears at the start of 
 | `rpi-plan` | RPI2️⃣ |
 | `rpi-validate-plan` | RPI✅ |
 | `rpi-implement` | RPI3️⃣ |
-| `rpi-proof` | RPI4️⃣ |
+| `rpi-recap` | RPI4️⃣ |
 
 **Why this matters:** Context rot doesn't announce itself with errors. It creeps in silently, causing models to lose track of critical instructions. When you see the marker at the start of each response, it's an <strong>indicator</strong> that the AI is probably following the prompt's instructions. If the marker disappears, it's an immediate signal that context instructions may have been lost.
 
@@ -224,7 +224,7 @@ Each prompt includes a context verification marker that appears at the start of 
 
 ### Protecting Sensitive Data in Committed Artifacts
 
-Permanent summary documents (from the Proof phase) are committed to your repository and may be publicly visible. **Never commit real credentials or sensitive data.** Follow these guidelines:
+Permanent summary documents (from the Recap phase) are committed to your repository and may be publicly visible. **Never commit real credentials or sensitive data.** Follow these guidelines:
 
 - **Replace credentials with placeholders**: Use `[YOUR_API_KEY_HERE]`, `[REDACTED]`, or `example-key-123` instead of real API keys, tokens, or passwords
 - **Use example values**: When demonstrating configuration, use dummy or example data instead of production values

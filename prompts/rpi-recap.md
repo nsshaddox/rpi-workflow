@@ -1,17 +1,17 @@
 ---
-name: rpi-proof
-description: "Proof phase: Validate implementation against plan and generate permanent summary"
+name: rpi-recap
+description: "Recap phase: Validate implementation against plan and generate permanent summary"
 tags:
-  - proof
+  - recap
   - validation
   - summary
 arguments: [CONTEXT]
 meta:
   category: rpi-workflow
-  allowed-tools: Glob, Grep, Read, Write, Bash
+  allowed-tools: Task, Glob, Grep, Read, Write, Bash
 ---
 
-# RPI Proof Phase
+# RPI Recap Phase
 
 ## Variables
 
@@ -38,7 +38,7 @@ The marker for this instruction is:  RPI4️⃣
 
 ## You are here in the workflow
 
-You have completed the **Research**, **Plan**, and **Implement** phases. This is the **Proof phase** where you validate the implementation against the plan, generate a permanent summary, and inform the user that temporary artifacts can be removed.
+You have completed the **Research**, **Plan**, and **Implement** phases. This is the **Recap phase** where you validate the implementation against the plan, generate a permanent summary, and inform the user that temporary artifacts can be removed.
 
 ### Workflow Overview
 
@@ -47,22 +47,33 @@ You have completed the **Research**, **Plan**, and **Implement** phases. This is
 - **Research** (completed): Explore codebase
 - **Plan** (completed): Break work into tasks
 - **Implement** (completed): Execute tasks
-- **Proof** (current): Validate and generate summary
+- **Recap** (current): Validate and generate summary
 
-**Key principle**: The proof phase produces the **only permanent documentation artifact** — a minimal "what changed and why" summary (max 40 lines). Temporary scaffolding in `.rpi/[FEATURE_NAME]/` is no longer needed after this phase.
+**Key principle**: The recap phase produces the **only permanent documentation artifact** — a minimal "what changed and why" summary (max 40 lines). Temporary scaffolding in `.rpi/[FEATURE_NAME]/` is no longer needed after this phase.
 
 ## Your Role
 
 You are a **Technical Documenter** who creates concise, high-level summaries of implementation work. Your goal is to capture "what changed and why" in max 40 lines, validate the implementation against the plan, and guide the user through cleanup.
 
-## Proof Process
+## Recap Process
 
-### Step 1: Resolve and Read Artifacts
+### Step 1: Resolve, Read Artifacts, and Spawn Verification Sub-Agent
 
 1. Resolve FEATURE_NAME using the priority in Variables above
 2. Find the repo root, then construct paths for PLAN_FILE and RESEARCH_FILE
 3. Read both files — stop and prompt user if PLAN_FILE is missing; suggest running `/rpi-implement` first
 4. Note the feature's complexity assessment and intended approach from research
+5. **Immediately spawn a verification sub-agent** using the `Task` tool — do not wait; let it run in parallel while you continue to Step 2
+
+**Verification sub-agent instructions:**
+
+Pass the sub-agent:
+
+- The `Verify` commands from every task in PLAN_FILE
+- The repo root path
+- Instructions to run each command and return a structured result per task: `{ task, command, passed: true|false, output }`
+
+The sub-agent handles build, lint, and test checks so you can analyze the implementation while it runs.
 
 ### Step 2: Analyze Implementation
 
@@ -79,11 +90,15 @@ git diff HEAD~[N]   # adjust N to span the implementation commits
 
 ### Step 3: Quick Validation
 
+By now the verification sub-agent from Step 1 should be complete. Collect its results and fill in the checklist:
+
 - [ ] **Plan exists**: PLAN_FILE is readable
 - [ ] **Tasks completed**: All parent tasks in plan are marked `[x]`
 - [ ] **Code changes present**: Git log shows implementation commits
-- [ ] **Tests pass** (if applicable): Run verification commands from plan's `Verify` fields
-- [ ] **Quality checks pass** (if applicable): Pre-commit hooks, linting, type checking
+- [ ] **Tests pass** (if applicable): Sub-agent results — all `passed: true`
+- [ ] **Quality checks pass** (if applicable): Sub-agent results — build and lint passed
+
+If the sub-agent reported any failures, surface the full output to the user before proceeding. Do not generate the summary document if there are unresolved failures.
 
 > This is a lightweight validation — focus on "does it work?" and "does it match the plan?" not exhaustive proof-of-correctness.
 
@@ -135,7 +150,7 @@ Create `docs/rpi/[FEATURE_NAME].md` using this **exact format**:
 
 After creating the summary document, tell the user:
 
-> Proof phase complete! Summary generated at `docs/rpi/[FEATURE_NAME].md`
+> Recap phase complete! Summary generated at `docs/rpi/[FEATURE_NAME].md`
 >
 > **Next steps:**
 >
