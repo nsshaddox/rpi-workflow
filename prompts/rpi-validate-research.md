@@ -2,9 +2,10 @@
 name: rpi-validate-research
 description: "Validate research document against FAR rubric before proceeding to Plan phase"
 tags:
-  - planning
+  - research
+  - validate
   - tasks
-arguments: []
+arguments: [CONTEXT]
 meta:
   category: rpi-workflow
   allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
@@ -18,11 +19,12 @@ CONTEXT = $ARGUMENTS
 
 ### Resolve Research File
 
-1. **If ARGUMENTS provided**: Use as context to find related research file
-2. **If ARGUMENTS empty**: Infer from the current git branch name
-3. **IF ARGUMENTS empty and branch is on main** Look for `./rpi/[SHORT_NAME]/` with only a research file in the directory.
+1. **Find repo root first**: Locate the repository root (directory containing `.git/`) before constructing any paths
+2. **If ARGUMENTS provided**: Use as context to find related research file
+3. **If ARGUMENTS empty**: Infer from the current git branch name
+4. **If ARGUMENTS empty and branch is on main**: Look for `[REPO_ROOT]/.rpi/[FEATURE_NAME]/` with only a research file in the directory
 
-RESEARCH_FILE = ./rpi/[SHORT_NAME]/research.md
+RESEARCH_FILE = [REPO_ROOT]/.rpi/[FEATURE_NAME]/research.md
 
 ## Context Marker
 
@@ -42,8 +44,9 @@ We are **between Research and Plan** in the RPI workflow. This validation gate e
 
 - **Research** (completed): Explore codebase
 - **Validate Research** (current): Quality check before planning
-- **Plan → Implement**: Break work into tasks
-- **Implement → Proof**: Execute tasks
+- **Plan**: Break work into tasks
+- **Implement**: Execute tasks
+- **Proof**: Generate results
 
 ## Your Role
 
@@ -53,8 +56,8 @@ You are a **Research Validator** who objectively evaluates research quality. You
 
 ### Step 1: Resolve and Read the Research Document
 
-1. Resolve SHORT_NAME using the priority in Variables above
-2. Construct path: `./rpi/[SHORT_NAME]/research.md`
+1. Resolve FEATURE_NAME using the priority in Variables above
+2. Construct path: `[REPO_ROOT]/.rpi/[FEATURE_NAME]/research.md`
 3. Read the file and verify it exists and is non-empty
 4. If the file does not exist, tell the user and suggest running `/rpi-research` first
 
@@ -142,7 +145,7 @@ Assumptions: [VALID/ISSUES]
 
 [If PASS:]
 VERDICT: Research meets FAR criteria. Ready for Plan phase.
-Next command: /rpi-plan [SHORT_NAME]
+Next command: /rpi-plan [FEATURE_NAME]
 
 [If FAIL:]
 VERDICT: Research does not meet FAR criteria.
@@ -161,8 +164,16 @@ Next step: Address recommendations and re-run /rpi-research
 
 ## Critical Constraints
 
+**Do:**
+
+- Find repo root before constructing any `.rpi/` paths
 - Base scores strictly on evidence present in the document — do not infer
 - Cite specific sections or gaps when justifying scores
-- Do not create or modify any files — output evaluation to the user only
-- If the research document self-scored FAR and you disagree, explain the discrepancy
-- Be constructive on failures — provide actionable path to improvement
+- Explain discrepancies if your FAR scores differ from the document's self-scores
+- Be constructive on failures — provide an actionable path to improvement
+
+**Don't:**
+
+- Create or modify any files — output evaluation to the user only
+- Infer information not explicitly present in the research document
+- Pass research that fails any individual threshold (F < 4, A < 3, R < 3)

@@ -4,7 +4,7 @@ description: "Research phase: Explore codebase and identify patterns for feature
 tags:
   - research
   - exploration
-arguments: []
+arguments: [Problem Statement]
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
@@ -15,10 +15,12 @@ meta:
 ## Variables
 
 PROBLEM_STATEMENT = $ARGUMENTS
-SHORT_NAME = kebab-case version of problem statement (e.g., "Fix login authentication bug" → "fix-login-authentication-bug")
-OUTPUT_DIR = ./rpi/[SHORT_NAME]/
-OUTPUT_FILE = ./rpi/[SHORT_NAME]/research.md
+FEATURE_NAME = kebab-case version of problem statement (e.g., "Fix login authentication bug" → "fix-login-authentication-bug")
+OUTPUT_DIR = [REPO_ROOT]/.rpi/[FEATURE_NAME]/
+OUTPUT_FILE = [REPO_ROOT]/.rpi/[FEATURE_NAME]/research.md
 LINE_COUNT = ~100
+
+**Find repo root first**: Locate the repository root (directory containing `.git/`) before constructing any paths.
 
 ## Context Marker
 
@@ -36,10 +38,10 @@ We are at the **beginning** of the RPI (Research, Plan, Implement) workflow. Thi
 
 **RPI workflow:**
 
-- **Research → Plan** (current): Explore codebase
-- **Plan → Implement**: Break work into tasks
-- **Implement → Proof**: Execute tasks
-- **Proof**: Auto-generate summary
+- **Research** (current): Explore codebase
+- **Plan**: Break work into tasks
+- **Implement**: Execute tasks
+- **Proof**: Generate results
 
 ## Your Role
 
@@ -51,7 +53,7 @@ This command executes the Research phase of the RPI Strategy by:
 
 1. **Parallel Codebase Research**: Launch three specialized codebase agents simultaneously
    - Agent 1: Find WHERE relevant code exists
-   - Agent 2: Two - Understand HOW the code works
+   - Agent 2: Understand HOW the code works
    - Agent 3: Discover similar implementations and patterns
 
 2. **Parallel Web Research**: Launch web search agent simultaneously
@@ -60,7 +62,7 @@ This command executes the Research phase of the RPI Strategy by:
 3. **Synthesis**: Compile all findings into a structured research document
    - Follow RPI Strategy Research phase output format
    - Include FAR Scale validation
-   - Output to [OUPUT_FILE]
+   - Output to [OUTPUT_FILE]
 
 ## Research Process
 
@@ -110,16 +112,16 @@ Based on research findings, categorize the feature:
 
 ### Step 4: Create Feature Directory and Generate Research Document
 
-**First, create the feature directory if it doesn't exists:**
+**First, create the feature directory if it doesn't exist:**
 
-- **Path**: `.rpi/[SHORT_NAME]/`
+- **Path**: `[REPO_ROOT]/.rpi/[FEATURE_NAME]/`
 - **Naming**: Use lowercase with hyphens for feature name
 - **Examples**: `.rpi/user-auth/`, `.rpi/payment-flow/`, `.rpi/admin-panel/`
 
-**Then create `.rpi/[SHORT_NAME]/research.md`** using this **exact format**:
+**Then create `[REPO_ROOT]/.rpi/[FEATURE_NAME]/research.md`** using this **exact format**:
 
 ```markdown
-# Research: [SHORT_NAME]
+# Research: [FEATURE_NAME]
 
 **Complexity**: [simple|medium|complex]
 **Files**: [N] to modify
@@ -223,7 +225,7 @@ If any gate fails, fix the issue before proceeding.
 
 ### Step 6: Request Human Approval
 
-After creating `.rpi/[SHORT_NAME]/research.md`, show the user:
+After creating `.rpi/[FEATURE_NAME]/research.md`, show the user:
 
 1. The complexity assessment
 2. Key findings summary (3-4 bullets)
@@ -234,7 +236,7 @@ After creating `.rpi/[SHORT_NAME]/research.md`, show the user:
 > Does this research capture the right scope and approach?
 > [Link to file]
 >
-> **Next command:** `/RPI-2-plan [SHORT_NAME]`
+> **Next command:** `/rpi-plan [FEATURE_NAME]`
 
 ## FAR Scale (Used by Web Researcher)
 
@@ -268,5 +270,15 @@ Structure findings with:
 
 ## Critical Constraints
 
-- Synthesis should integrate findings, not just concatenate them
+**Do:**
+
+- Find repo root before constructing any `.rpi/` paths
+- Synthesize findings across agents — do not just concatenate them
 - Apply critical thinking when assessing FAR scores
+- Verify every file path in "Key Files" exists in the codebase before writing
+
+**Don't:**
+
+- Write verbose explanations, detailed specs, or step-by-step implementation instructions
+- Include edge cases, full requirements, or anything not essential for planning
+- Proceed if FAR mean is below 4.0 — document what additional research is needed
