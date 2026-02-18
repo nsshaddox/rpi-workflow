@@ -1,5 +1,4 @@
 <div align="center">
-    <img src="./misc/header.png" alt="RPI Workflow header" width="400"/>
     <h1>🧭 RPI (Research, Plan, Implement) Workflow</h1>
     <h3><em>Build predictable software with a minimal, efficient AI-guided workflow.</em></h3>
 </div>
@@ -83,10 +82,6 @@ uvx --from git+https://github.com/liatrio-labs/slash-command-manager `
 **Result:** you can now type `/rpi-research` in your AI assistant to start the workflow.
 
 **Where to use the slash commands:** in AI chat UIs (e.g., Windsurf, Claude Code) type `/` in the chat input. Some AI assistants require being in "Agent" or "Code" mode for slash commands to appear.
-
-<img max-width="500" alt="Example of slash commands installed in Claude Code" src="docs/assets/images/slash-command-example-claude.png" />
-
-<img max-width="500" alt="Example of slash commands installed in Windsurf" src="docs/assets/images/slash-command-example-windsurf.png" />
 
 #### Option B: Manual Copy-Paste (No Installation)
 
@@ -198,12 +193,6 @@ src/                           # Your working code
 
 ## Documentation
 
-For comprehensive documentation about the RPI workflow:
-
-- **[goal.md](rpi-workflow/goal.md)** — Problem statement, solution approach, and success metrics
-- **[roadmap.md](rpi-workflow/roadmap.md)** — 6-week implementation plan with phases and milestones
-- **[TASKS.md](rpi-workflow/TASKS.md)** — Current progress and task tracking
-
 ### External References
 
 - **[Goose RPI Tutorial](https://block.github.io/goose/docs/tutorials/rpi/)** — Tutorial on RPI workflow concepts
@@ -213,7 +202,6 @@ For comprehensive documentation about the RPI workflow:
 ### Getting help
 
 - **Ask/Report**: Open a GitHub Issue in this repo with details about your environment and AI assistant
-- **Contribute**: See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 ## Context verification markers
 
@@ -230,7 +218,7 @@ Each prompt includes a context verification marker that appears at the start of 
 
 **Why this matters:** Context rot doesn't announce itself with errors. It creeps in silently, causing models to lose track of critical instructions. When you see the marker at the start of each response, it's an <strong>indicator</strong> that the AI is probably following the prompt's instructions. If the marker disappears, it's an immediate signal that context instructions may have been lost.
 
-**What to expect:** You'll see responses like `RPI1️⃣ I'll explore the codebase to identify patterns...` or `RPI3️⃣ Let me implement task 1.1...`. This is normal and indicates the verification system is working. For more details, see the [research documentation](docs/emoji-context-verification-research.md).
+**What to expect:** You'll see responses like `RPI1️⃣ I'll explore the codebase to identify patterns...` or `RPI3️⃣ Let me implement task 1.1...`. This is normal and indicates the verification system is working.
 
 ## Security Best Practices
 
@@ -247,7 +235,7 @@ The RPI workflow prompts include built-in reminders about security, but ultimate
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md). Please review [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+Open a GitHub Issue to report bugs, suggest improvements, or ask questions.
 
 ## References
 
