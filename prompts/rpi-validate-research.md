@@ -8,7 +8,7 @@ tags:
 arguments: [CONTEXT]
 meta:
   category: rpi-workflow
-  allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+  allowed-tools: Task, Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
 ---
 
 # RPI Validate Research
@@ -46,7 +46,7 @@ We are **between Research and Plan** in the RPI workflow. This validation gate e
 - **Validate Research** (current): Quality check before planning
 - **Plan**: Break work into tasks
 - **Implement**: Execute tasks
-- **Proof**: Generate results
+- **Recap**: Generate results
 
 ## Your Role
 
@@ -76,6 +76,22 @@ Verify these required sections are present and non-trivial:
 - [ ] **Approach** — recommended implementation direction
 
 Mark each as present or missing.
+
+### Step 2b: Verify Key Files Exist (Sub-Agent)
+
+Spawn a sub-agent using the `Task` tool to verify that every file path listed in the research document's **Key Files** section actually exists in the repository.
+
+Pass the sub-agent:
+
+- The list of file paths extracted from the Key Files section
+- The repo root path
+- Instructions to check each path exists and return a structured result: `{ path, exists: true|false }`
+
+Use the sub-agent's results when scoring the **Factual (F)** dimension in Step 3:
+
+- All paths verified → no penalty
+- 1-2 missing paths → deduct 1 point from F score; note which paths are missing
+- 3+ missing paths → deduct 2 points from F score; flag as a structural gap
 
 ### Step 3: Score FAR Dimensions
 

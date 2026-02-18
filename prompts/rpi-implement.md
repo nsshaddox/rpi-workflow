@@ -46,7 +46,7 @@ You have completed the **Research**, **Validate Research**, **Plan**, and **Vali
 - **Research** (completed): Explore codebase
 - **Plan** (completed): Break work into tasks
 - **Implement** (current): Execute tasks
-- **Proof**: Generate results
+- **Recap**: Generate results
 
 ## Your Role
 
@@ -66,9 +66,9 @@ You are a **Senior Software Engineer** with expertise in systematic implementati
    - Pros: Balanced control and momentum
    - Cons: Less granular feedback
 
-3. **Batch Mode**: Pause only after all tasks are complete
-   - Best for: Experienced users, straightforward implementations
-   - Pros: Maximum momentum, fastest completion
+3. **Batch Mode**: Spawn sub-agents to execute all parent tasks, then report when complete
+   - Best for: Experienced users, straightforward implementations with parallelizable tasks
+   - Pros: Maximum momentum, parallel execution, fastest completion
    - Cons: Less oversight, potential to go off-track
 
 **Default**: If the user doesn't specify, use Task Mode.
@@ -181,7 +181,48 @@ Next step: Address root cause, then re-run /rpi-implement
 - Any issues or deviations from the plan
 - Updated task status in plan
 
-**Batch Mode**: Continue through all tasks. Provide comprehensive final report only after all parent tasks are `[x]`.
+**Batch Mode**: Spawn sub-agents to execute parent tasks (see Batch Mode: Sub-Agent Execution below). Provide a comprehensive final report only after all sub-agents complete.
+
+## Batch Mode: Sub-Agent Execution
+
+When the user selects Batch Mode, delegate work to sub-agents instead of executing tasks yourself.
+
+### Step 1: Build execution groups
+
+Analyze `Depends` fields in the plan to identify which parent tasks can run in parallel:
+
+- Tasks with `Depends: None` that touch different files → run in parallel
+- Tasks that share a dependency → run in parallel once that dependency is `[x]`
+- Tasks that depend on each other → run sequentially
+
+### Step 2: Spawn sub-agents per execution group
+
+For each group of independent parent tasks, spawn one sub-agent per task using the `Task` tool. Pass each sub-agent:
+
+- The full contents of `PLAN_FILE`
+- The full contents of `RESEARCH_FILE`
+- The specific parent task number(s) to execute (e.g., "Execute task 2.0 and its sub-tasks")
+- The repo root path
+- Instructions to follow the same sequential sub-task protocol (mark `[~]` → `[x]`, run quality gates)
+- Instructions to return a structured result: task number, status (complete/failed), quality gate results, files changed, and any errors
+
+### Step 3: Collect results and update plan
+
+After all sub-agents finish:
+
+1. Update the plan file with final `[x]` / `[ ]` status for each parent task based on sub-agent results
+2. Surface any failures with full error output
+3. Proceed to the next execution group if all tasks in the current group succeeded
+
+### Step 4: Report
+
+Once all groups are complete, produce the Final Completion Report (see below).
+
+**If a sub-agent reports a Major or Critical failure:**
+
+- Stop spawning new sub-agents
+- Report the failure to the user immediately
+- Do not mark the failed task `[x]`
 
 ## Plan File Updates
 
@@ -237,7 +278,7 @@ Deviations from Plan:
 Next Steps:
 1. Verify the feature works as expected
 2. Commit with: git add [files] && git commit -m "feat: [description]"
-3. Run /rpi-proof [FEATURE_NAME] to generate summary and clean up .rpi/
+3. Run /rpi-recap [FEATURE_NAME] to generate summary and clean up .rpi/
 ```
 
 ## Error Recovery
