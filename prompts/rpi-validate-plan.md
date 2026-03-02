@@ -1,20 +1,37 @@
 ---
 name: rpi-validate-plan
-description: Validate a plan against the FACTS rubric and return score, pass/fail status, and recommendations
+description: Validate a plan against the FACTS rubric and return score, pass/fail
+  status, and recommendations
 tags:
-  - planning
-  - validate
-arguments: [CONTEXT]
+- planning
+- validate
+enabled: true
+arguments:
+- name: CONTEXT
+  description: null
+  required: true
 meta:
   category: rpi-workflow
   allowed-tools: Read
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-validate-plan
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.838662+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Validate Plan
 
 ## Variables
 
-CONTEXT = $ARGUMENTS
+CONTEXT = - `<CONTEXT>` (required):
 
 ### Resolve Plan File
 

@@ -1,20 +1,36 @@
 ---
 name: rpi-research
-description: "Research phase: Explore codebase and identify patterns for feature implementation"
+description: 'Research phase: Explore codebase and identify patterns for feature implementation'
 tags:
-  - research
-  - exploration
-arguments: [Problem Statement]
+- exploration
+- research
+enabled: true
+arguments:
+- name: Problem Statement
+  description: null
+  required: true
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-research
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.836552+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Research Phase
 
 ## Variables
 
-PROBLEM_STATEMENT = $ARGUMENTS
+PROBLEM_STATEMENT = - `<Problem Statement>` (required):
 FEATURE_NAME = kebab-case version of problem statement (e.g., "Fix login authentication bug" → "fix-login-authentication-bug")
 OUTPUT_DIR = [REPO_ROOT]/.rpi/[FEATURE_NAME]/
 OUTPUT_FILE = [REPO_ROOT]/.rpi/[FEATURE_NAME]/research.md

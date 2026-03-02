@@ -1,21 +1,38 @@
 ---
 name: rpi-implement
-description: "Implement tasks from a validated plan file with quality gates and progress tracking"
+description: Implement tasks from a validated plan file with quality gates and progress
+  tracking
 tags:
-  - implementation
-  - tasks
-  - execution
-arguments: [CONTEXT]
+- execution
+- implementation
+- tasks
+enabled: true
+arguments:
+- name: CONTEXT
+  description: null
+  required: true
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, Read, Edit, Write, Bash
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-implement
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.824735+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Implement Phase
 
 ## Variables
 
-CONTEXT = $ARGUMENTS
+CONTEXT = - `<CONTEXT>` (required):
 
 ### Resolve Plan File
 

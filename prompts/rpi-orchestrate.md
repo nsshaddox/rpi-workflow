@@ -1,28 +1,40 @@
 ---
 name: rpi-orchestrate
-description: "Orchestrate the full RPI workflow (Research → Plan → Implement → Recap) using a Claude Agent Team"
+description: Orchestrate the full RPI workflow (Research → Plan → Implement → Recap)
+  using a Claude Agent Team
 tags:
-  - orchestrate
-  - workflow
-  - teams
-arguments: [Problem Statement]
+- orchestrate
+- teams
+- workflow
+enabled: true
+arguments:
+- name: Problem Statement
+  description: null
+  required: true
 meta:
   category: rpi-workflow
-  allowed-tools: TeamCreate, TaskCreate, TaskUpdate, TaskList, SendMessage, Glob, Read, Bash
+  allowed-tools: TeamCreate, TaskCreate, TaskUpdate, TaskList, SendMessage, Glob,
+    Read, Bash
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-orchestrate
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.828258+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Orchestrate
 
 ## Variables
 
-PROBLEM_STATEMENT = $ARGUMENTS
+PROBLEM_STATEMENT = - `<Problem Statement>` (required):
 FEATURE_NAME = kebab-case version of problem statement (e.g., "Add login auth" → "add-login-auth")
-BRANCH_NAME = `rpi/[FEATURE_NAME]`
-WORKTREE_PATH = `[REPO_PARENT]/[REPO_NAME]-rpi-[FEATURE_NAME]`
-(e.g., if repo is at `/home/user/myapp`, worktree is at `/home/user/myapp-rpi-add-login-auth`)
-
-**Find repo root first**: Locate the repository root (directory containing `.git/`) before
-constructing any paths.
 
 ## Context Marker
 
@@ -63,19 +75,19 @@ Before creating the team, present these options to the user:
 
 **Gate Mode — How much oversight do you want?**
 
-1. **Full Gates (Default)**: Lead pauses after Research validation and after Plan validation.
+1. **Gated (Default)**: Lead pauses after Research validation and after Plan validation.
    You review and explicitly approve before each phase continues.
    - Best for: First-time use, complex or risky features
 
-2. **Auto-Advance on Pass**: Lead auto-continues if FAR mean ≥ 4.0 and FACTS mean ≥ 3.0.
+2. **Smart**: Lead auto-continues if FAR mean ≥ 4.0 and FACTS mean ≥ 3.0.
    Only pauses if validation fails or at the final implementation review.
    - Best for: Familiar codebases, well-defined features
 
-3. **Autonomous**: Lead runs all phases end-to-end. Stops only at implementation verification
+3. **Auto**: Lead runs all phases end-to-end. Stops only at implementation verification
    before commits.
    - Best for: Experienced users, straightforward implementations
 
-**Default**: Full Gates if the user doesn't specify.
+**Default**: Gated if the user doesn't specify.
 
 ### Step 0b: Derive Feature Name
 
@@ -85,21 +97,7 @@ Convert PROBLEM_STATEMENT to kebab-case for FEATURE_NAME.
 
 Create a team named `rpi-[FEATURE_NAME]` using `TeamCreate`. Enable delegate mode (Shift+Tab).
 
-### Step 0d: Create Git Worktree
-
-Create an isolated worktree for this feature so multiple RPI teams can run in parallel without
-conflicting. From the repo root, run:
-
-```bash
-git worktree add -b rpi/[FEATURE_NAME] [WORKTREE_PATH] main
-```
-
-If `main` is not the default branch, substitute the correct base branch name.
-
-**All teammates will work exclusively inside `[WORKTREE_PATH]`.** The `.rpi/[FEATURE_NAME]/`
-directory, all code changes, and the `docs/rpi/` summary will be created there.
-
-### Step 0e: Create Shared Task List
+### Step 0d: Create Shared Task List
 
 - Task 1 — Research
 - Task 2 — Validate Research *(blocked by Task 1)*
@@ -114,9 +112,7 @@ directory, all code changes, and the `docs/rpi/` summary will be created there.
 
 Spawn a **Researcher** teammate, assign Task 1, and send it this message:
 
-> **Working directory**: `[WORKTREE_PATH]` — run all commands from here.
->
-> Run `/rpi-research [PROBLEM_STATEMENT]`
+>Run `/rpi-research [PROBLEM_STATEMENT]`
 >
 > When complete, report back to the lead with:
 >
@@ -133,9 +129,7 @@ Wait for the Researcher to report before proceeding.
 
 Spawn a **Validator** teammate, assign Task 2, and send it this message:
 
-> **Working directory**: `[WORKTREE_PATH]` — run all commands from here.
->
-> Run `/rpi-validate-research [FEATURE_NAME]`
+>Run `/rpi-validate-research [FEATURE_NAME]`
 >
 > When complete, report back to the lead with the full FAR validation output
 > (structure check, F/A/R scores, mean, and PASS/FAIL verdict).
@@ -150,7 +144,7 @@ Wait for the Validator to report before proceeding.
 recommendations to the user. Ask them to confirm before retrying. On retry, message the Researcher
 to address the gaps, then re-run the Validator.
 
-**Full Gates (FAR PASSES)**: Present to user:
+**Gated (FAR PASSES)**: Present to user:
 > Research phase complete — FAR [X.XX] PASS.
 > Complexity: [simple|medium|complex] · Key findings: [bullets]
 > Review: `.rpi/[FEATURE_NAME]/research.md`
@@ -160,12 +154,12 @@ to address the gaps, then re-run the Validator.
 
 Wait for explicit `yes` before proceeding.
 
-**Auto-Advance (FAR PASSES)**: Notify user:
-> Research passed FAR validation (mean: [X.XX]). Auto-advancing to Plan phase.
+**Smart (FAR PASSES)**: Notify user:
+> Research passed FAR validation (mean: [X.XX]). Advancing to Plan phase.
 
 Continue without waiting.
 
-**Autonomous (FAR PASSES)**: Continue silently.
+**Smart (FAR PASSES)**: Continue silently.
 
 ---
 
@@ -173,9 +167,7 @@ Continue without waiting.
 
 Spawn a **Planner** teammate, assign Task 3, and send it this message:
 
-> **Working directory**: `[WORKTREE_PATH]` — run all commands from here.
->
-> Run `/rpi-plan [FEATURE_NAME]`
+>Run `/rpi-plan [FEATURE_NAME]`
 >
 > When complete, report back to the lead with:
 >
@@ -191,9 +183,7 @@ Wait for the Planner to report before proceeding.
 
 Send the existing **Validator** teammate a new message (no need to spawn a new one):
 
-> **Working directory**: `[WORKTREE_PATH]` — run all commands from here.
->
-> Run `/rpi-validate-plan [FEATURE_NAME]`
+>Run `/rpi-validate-plan [FEATURE_NAME]`
 >
 > When complete, report back to the lead with the full FACTS validation output
 > (F/A/C/T/S scores, mean, and PASS/FAIL verdict).
@@ -207,7 +197,7 @@ Assign Validator to Task 4. Wait for results.
 **If FACTS FAILS** (any gate mode): Always pause. Surface the failure and recommendations to the
 user. Message the Planner to revise, then re-run the Validator.
 
-**Full Gates (FACTS PASSES)**: Present to user:
+**Gated (FACTS PASSES)**: Present to user:
 > Plan phase complete — FACTS [X.XX] PASS.
 > [N] parent tasks · [N] sub-tasks · Parallelizable groups: [list]
 > Review: `.rpi/[FEATURE_NAME]/plan.md`
@@ -217,10 +207,10 @@ user. Message the Planner to revise, then re-run the Validator.
 
 Wait for explicit `yes` before proceeding.
 
-**Auto-Advance (FACTS PASSES)**: Notify user:
-> Plan passed FACTS validation (mean: [X.XX]). Auto-advancing to Implementation.
+**Smart (FACTS PASSES)**: Notify user:
+> Plan passed FACTS validation (mean: [X.XX]). Advancing to Implementation.
 
-**Autonomous (FACTS PASSES)**: Continue silently.
+**Smart (FACTS PASSES)**: Continue silently.
 
 ---
 
@@ -228,9 +218,7 @@ Wait for explicit `yes` before proceeding.
 
 Spawn an **Implementer** teammate, assign Task 5, and send it this message:
 
-> **Working directory**: `[WORKTREE_PATH]` — run all commands from here.
->
-> Run `/rpi-implement [FEATURE_NAME]`
+>Run `/rpi-implement [FEATURE_NAME]`
 >
 > When prompted to choose a checkpoint mode, select **Batch Mode**.
 >
@@ -248,9 +236,12 @@ user and ask how to proceed before spawning the Recapper.
 
 ---
 
-## Gate 3: Implementation Verification (Always Enforced)
+## Gate 3: Implementation Verification
 
-Regardless of gate mode, present to user:
+**If the Implementer reports any failure** (any gate mode): Always pause. Surface the full error,
+files changed, and deviations to the user. Ask how to proceed before spawning the Recapper.
+
+**Gated (all checks pass)**: Present to user:
 
 > Implementation complete.
 > Tasks: [N/N] · Build [✓/✗] · Lint [✓/✗] · Tests [✓/✗]
@@ -262,7 +253,17 @@ Regardless of gate mode, present to user:
 > Please verify the feature works as expected. Type `yes` to generate the recap summary,
 > or describe any issues to address.
 
-Do not proceed until the user confirms.
+Wait for explicit `yes` before proceeding.
+
+**Smart (all checks pass)**: Notify user:
+
+> Implementation complete — Build ✓ · Lint ✓ · Tests ✓. Advancing to Recap.
+> Files changed: [list]
+> Deviations: [or "None"]
+
+Continue without waiting.
+
+**Smart (all checks pass)**: Continue silently.
 
 ---
 
@@ -270,9 +271,7 @@ Do not proceed until the user confirms.
 
 Spawn a **Recapper** teammate, assign Task 6, and send it this message:
 
-> **Working directory**: `[WORKTREE_PATH]` — run all commands from here.
->
-> Run `/rpi-recap [FEATURE_NAME]`
+>Run `/rpi-recap [FEATURE_NAME]`
 >
 > When complete, report back to the lead with:
 >
@@ -288,17 +287,14 @@ Wait for the Recapper to report.
 Present to user:
 
 > RPI workflow complete.
-> Branch: `rpi/[FEATURE_NAME]` · Worktree: `[WORKTREE_PATH]`
-> Summary: `[WORKTREE_PATH]/docs/rpi/[FEATURE_NAME].md`
+> Summary: `docs/rpi/[FEATURE_NAME].md`
 >
 > Next steps:
 >
-> 1. Review summary: `[WORKTREE_PATH]/docs/rpi/[FEATURE_NAME].md`
-> 2. Commit (from worktree):
->    `cd [WORKTREE_PATH] && git add docs/rpi/[FEATURE_NAME].md && git commit -m "docs: add [FEATURE_NAME] implementation summary"`
-> 3. Remove temp artifacts: `rm -rf [WORKTREE_PATH]/.rpi/[FEATURE_NAME]/`
+> 1. Review summary: `docs/rpi/[FEATURE_NAME].md`
+> 2. Commit: `git add docs/rpi/[FEATURE_NAME].md && git commit -m "docs: add [FEATURE_NAME] implementation summary"`
+> 3. Remove temp artifacts: `rm -rf .rpi/[FEATURE_NAME]/`
 > 4. (Optional) Open PR: `/create-pull-request`
-> 5. (Optional) Remove worktree when done: `git worktree remove [WORKTREE_PATH]`
 
 Then shut down the team:
 
@@ -315,7 +311,7 @@ Then shut down the team:
 - Stay in delegate mode — never write code or edit files yourself
 - Honor the selected gate mode throughout; never override it on your own
 - Always pause on validation failures (FAR or FACTS), regardless of gate mode
-- Always enforce Gate 3 (user verification before recap), regardless of gate mode
+- Always enforce Gate 3 on any implementation failure, regardless of gate mode
 - Synthesize teammate reports before presenting to the user — do not forward raw output
 - Confirm each phase is complete before advancing to the next
 

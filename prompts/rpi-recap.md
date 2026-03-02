@@ -1,21 +1,38 @@
 ---
 name: rpi-recap
-description: "Recap phase: Validate implementation against plan and generate permanent summary"
+description: 'Recap phase: Validate implementation against plan and generate permanent
+  summary'
 tags:
-  - recap
-  - validation
-  - summary
-arguments: [CONTEXT]
+- recap
+- summary
+- validation
+enabled: true
+arguments:
+- name: CONTEXT
+  description: null
+  required: true
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, Read, Write, Bash
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-recap
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.834440+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Recap Phase
 
 ## Variables
 
-CONTEXT = $ARGUMENTS
+CONTEXT = - `<CONTEXT>` (required):
 
 ### Resolve Plan File
 

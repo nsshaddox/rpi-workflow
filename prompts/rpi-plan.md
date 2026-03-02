@@ -1,20 +1,36 @@
 ---
 name: rpi-plan
-description: "Plan phase: Break research into actionable tasks with verification steps"
+description: 'Plan phase: Break research into actionable tasks with verification steps'
 tags:
-  - planning
-  - tasks
-arguments: [CONTEXT]
+- planning
+- tasks
+enabled: true
+arguments:
+- name: CONTEXT
+  description: null
+  required: true
 meta:
   category: rpi-workflow
   allowed-tools: Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-plan
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.832016+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Plan Phase
 
 ## Variables
 
-CONTEXT = $ARGUMENTS
+CONTEXT = - `<CONTEXT>` (required):
 
 ### Resolve Research File
 

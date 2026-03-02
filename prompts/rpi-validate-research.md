@@ -1,21 +1,38 @@
 ---
 name: rpi-validate-research
-description: "Validate research document against FAR rubric before proceeding to Plan phase"
+description: Validate research document against FAR rubric before proceeding to Plan
+  phase
 tags:
-  - research
-  - validate
-  - tasks
-arguments: [CONTEXT]
+- research
+- tasks
+- validate
+enabled: true
+arguments:
+- name: CONTEXT
+  description: null
+  required: true
 meta:
   category: rpi-workflow
   allowed-tools: Task, Glob, Grep, LS, Read, Edit, MultiEdit, Write, WebFetch, WebSearch
+  agent: claude-code
+  agent_display_name: Claude Code
+  command_dir: .claude/commands
+  command_format: markdown
+  command_file_extension: .md
+  source_prompt: rpi-validate-research
+  source_path: prompts/
+  version: 0.1.0
+  updated_at: '2026-02-18T17:14:56.841006+00:00'
+  source_type: github
+  source_repo: nsshaddox/rpi-workflow
+  source_branch: main
 ---
 
 # RPI Validate Research
 
 ## Variables
 
-CONTEXT = $ARGUMENTS
+CONTEXT = - `<CONTEXT>` (required):
 
 ### Resolve Research File
 
