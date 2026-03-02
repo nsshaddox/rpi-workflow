@@ -30,6 +30,7 @@ RPI achieves **70%+ reduction in documentation** compared to traditional spec-dr
 
 - [TLDR / Quickstart](#tldr--quickstart)
 - [Details for the 6-step workflow](#details-for-the-6-step-workflow)
+- [Orchestrated Workflow (rpi-orchestrate)](#orchestrated-workflow-rpi-orchestrate)
 - [Artifacts and directory layout](#artifacts-and-directory-layout)
 - [Documentation](#documentation)
 - [Context verification markers](#context-verification-markers)
@@ -96,6 +97,14 @@ Copy the contents of a prompt file directly from `prompts/` and paste it into yo
 5. Run `/rpi-implement` to execute tasks with quality gates (no auto-commits - you verify first).
 6. Run `/rpi-recap` to generate a permanent summary and validate the implementation.
 
+**Or run the full pipeline automatically:**
+
+```bash
+/rpi-orchestrate "Your feature description"
+```
+
+See [Orchestrated Workflow](#orchestrated-workflow-rpi-orchestrate) for details.
+
 ## Details for the 6-step workflow
 
 Each step uses a different prompt file. RPI uses **temporary artifacts** (deleted after implementation) and **permanent summaries** (committed to repo).
@@ -131,6 +140,45 @@ Each step uses a different prompt file. RPI uses **temporary artifacts** (delete
    - **Why**: provides human-focused documentation while cleaning up temporary AI artifacts
 
 7. **SHIP IT** 🚢💨 (after you verify and commit)
+
+## Orchestrated Workflow (rpi-orchestrate)
+
+[`prompts/rpi-orchestrate.md`](./prompts/rpi-orchestrate.md) runs the full Research → Validate → Plan → Validate → Implement → Recap pipeline automatically using a **Claude Agent Team**. Instead of running each step manually, the orchestrator spawns specialist teammates, gates on validation results, and hands off between phases.
+
+### Usage
+
+```bash
+/rpi-orchestrate "Add user authentication with JWT"
+```
+
+### Gate Modes
+
+Choose how much oversight you want when prompted:
+
+| Mode | Behavior |
+| :--- | :------- |
+| **Gated** *(default)* | Pauses after Research and Plan validation — you explicitly approve before each phase continues |
+| **Smart** | Auto-advances if FAR mean ≥ 4.0 and FACTS mean ≥ 3.0 — only pauses on failures or at implementation review |
+| **Auto** | Runs all phases end-to-end — stops only if a validation or implementation check fails |
+
+Regardless of gate mode, the orchestrator **always pauses** on any validation failure (FAR or FACTS) and any implementation failure.
+
+### Team Structure
+
+| Teammate | Skill invoked |
+| :------- | :------------ |
+| Researcher | `/rpi-research` |
+| Validator | `/rpi-validate-research`, then `/rpi-validate-plan` |
+| Planner | `/rpi-plan` |
+| Implementer | `/rpi-implement` (Batch Mode) |
+| Recapper | `/rpi-recap` |
+
+### Prerequisites
+
+- Claude Code with agent team support
+- All `rpi-*` slash commands installed (see [Installation](#installation-options))
+
+---
 
 ## Highlights
 
@@ -209,6 +257,7 @@ Each prompt includes a context verification marker that appears at the start of 
 
 | Prompt | Marker |
 |---|---|
+| `rpi-orchestrate` | RPI⚡ |
 | `rpi-research` | RPI1️⃣ |
 | `rpi-validate-research` | RPI✅ |
 | `rpi-plan` | RPI2️⃣ |
